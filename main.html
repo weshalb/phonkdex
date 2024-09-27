@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHONKDEX</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #f1f1f1;
+        }
+
+        header {
+            background-color: #333;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4081;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: #f1f1f1;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff4081;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #222;
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .hero button {
+            padding: 10px 20px;
+            background-color: #ff4081;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .hero button:hover {
+            background-color: #e91e63;
+        }
+
+        section {
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            background-color: #2a2a2a;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                flex-direction: column;
+            }
+            .nav-links li {
+                margin: 10px 0;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">PHONKDEX</div>
+            <ul class="nav-links">
+                <li><a href="#home">Start</a></li>
+                <li><a href="#about">Über uns</a></li>
+                <li><a href="#gallery">Galerie</a></li>
+                <li><a href="#contact">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <h1>Willkommen bei PHONKDEX</h1>
+            <p>Hier ist Ihr Ziel für die neuesten Trends in der Musik und Kultur. Erleben Sie die besten Phonk-Beats und mehr.</p>
+            <button>Erfahren Sie mehr</button>
+        </section>
+
+        <section id="about">
+            <h2>Über uns</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet accumsan arcu. Vivamus auctor lorem sit amet libero hendrerit, eu tincidunt dui tristique.</p>
+        </section>
+
+        <section id="gallery">
+            <h2>Galerie</h2>
+            <p>Hier können Sie einige unserer besten Momente sehen. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </section>
+
+        <section id="contact">
+            <h2>Kontakt</h2>
+            <p>Wenn Sie Fragen haben, zögern Sie nicht, uns zu kontaktieren. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+        </section>
+    </main>
+</body>
+</html>
