@@ -50,7 +50,18 @@
             animation: fadeIn 1s ease-in-out;
         }
 
-        header nav a {
+        .menu-icon {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav a {
             margin: 0 15px;
             text-decoration: none;
             color: #fff;
@@ -58,8 +69,29 @@
             transition: color 0.3s;
         }
 
-        header nav a:hover {
+        nav a:hover {
             color: #aaa;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .mobile-nav a {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .mobile-nav.active {
+            display: flex;
         }
 
         .hero {
@@ -210,48 +242,42 @@
         }
 
         @media screen and (max-width: 768px) {
-            .hero {
-                height: calc(100vh - 60px);
-                padding: 20px;
+            .menu-icon {
+                display: block;
             }
 
-            .hero h1 {
-                font-size: 3rem;
+            nav {
+                display: none;
             }
 
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .content-section, .additional-section {
-                padding: 40px 20px;
-            }
-
-            .card {
-                width: 100%;
-                margin-bottom: 20px;
-            }
-
-            header {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            header nav a {
-                margin: 10px 5px;
+            .mobile-nav.active {
+                display: flex;
             }
         }
     </style>
+    <script>
+        function toggleMenu() {
+            const mobileNav = document.querySelector('.mobile-nav');
+            mobileNav.classList.toggle('active');
+        }
+    </script>
 </head>
 <body>
     <header>
         <div class="logo">PhonkDex</div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <nav>
             <a href="#news">NEWS</a>
             <a href="#genres">GENRES</a>
             <a href="#artists">ARTISTS</a>
             <a href="#check">POTENTIAL CHECK</a>
         </nav>
+        <div class="mobile-nav">
+            <a href="#news">NEWS</a>
+            <a href="#genres">GENRES</a>
+            <a href="#artists">ARTISTS</a>
+            <a href="#check">POTENTIAL CHECK</a>
+        </div>
     </header>
 
     <div class="hero">
