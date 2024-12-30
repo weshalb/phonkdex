@@ -63,7 +63,7 @@
         }
 
         .hero {
-            height: calc(100vh - 60px);
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -121,7 +121,7 @@
         }
 
         .content-section {
-            padding: 80px 50px;
+            padding: 60px 20px;
             background: rgba(0, 0, 0, 0.95);
             border-radius: 15px;
             margin: 20px auto;
@@ -131,10 +131,17 @@
         }
 
         .content-section h2 {
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             font-size: 2.5rem;
             color: #fff;
             text-transform: uppercase;
+        }
+
+        .content-section p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #ccc;
+            margin-bottom: 40px;
         }
 
         .card-container {
@@ -201,6 +208,39 @@
             font-size: 0.9rem;
             color: #aaa;
         }
+
+        @media screen and (max-width: 768px) {
+            .hero {
+                height: calc(100vh - 60px);
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .content-section, .additional-section {
+                padding: 40px 20px;
+            }
+
+            .card {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            header {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            header nav a {
+                margin: 10px 5px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -222,6 +262,7 @@
 
     <div id="news" class="content-section">
         <h2>Latest News</h2>
+        <p>Stay updated with the latest happenings in the world of Phonk. From underground trends to viral hits, we bring you the news that matters.</p>
         <div class="card-container">
             <div class="card">
                 <h3>News Title 1</h3>
