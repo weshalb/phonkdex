@@ -105,11 +105,84 @@
             animation: pulseBg 8s infinite;
             color: #fff;
             overflow: hidden;
+            position: relative;
         }
 
         @keyframes pulseBg {
             0%, 100% { background-size: 150%; }
             50% { background-size: 200%; }
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-elements .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 8s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .circle.small {
+            width: 50px;
+            height: 50px;
+        }
+
+        .circle.medium {
+            width: 100px;
+            height: 100px;
+        }
+
+        .circle.large {
+            width: 150px;
+            height: 150px;
+        }
+
+        .circle:nth-child(1) {
+            top: 10%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .circle:nth-child(2) {
+            top: 60%;
+            left: 25%;
+            animation-delay: 2s;
+        }
+
+        .circle:nth-child(3) {
+            top: 30%;
+            left: 70%;
+            animation-delay: 4s;
+        }
+
+        .circle:nth-child(4) {
+            top: 80%;
+            left: 50%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
         }
 
         .hero h1 {
@@ -281,6 +354,12 @@
     </header>
 
     <div class="hero">
+        <div class="floating-elements">
+            <div class="circle small"></div>
+            <div class="circle medium"></div>
+            <div class="circle large"></div>
+            <div class="circle small"></div>
+        </div>
         <h1>Welcome to PhonkDex</h1>
         <p>Your ultimate platform for everything phonk. Discover news, explore genres, find artists, and check the potential of your creations!</p>
         <button>Explore Now</button>
