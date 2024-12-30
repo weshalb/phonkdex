@@ -39,28 +39,29 @@
         }
 
         header .logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #fff;
+            letter-spacing: 2px;
         }
 
         nav {
             display: flex;
-            gap: 20px;
+            gap: 15px;
         }
 
         nav a {
             text-decoration: none;
             color: #fff;
-            font-size: 1.1rem;
-            padding: 10px 15px;
+            font-size: 1.2rem;
+            padding: 8px 15px;
             border-radius: 5px;
             transition: background-color 0.3s, color 0.3s;
         }
 
         nav a:hover, nav a.active {
-            background-color: #333;
-            color: #aaa;
+            background-color: #444;
+            color: #ddd;
         }
 
         .hero {
@@ -80,7 +81,7 @@
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: 4.5rem;
             margin-bottom: 20px;
             animation: zoomIn 1s ease-out;
         }
@@ -91,8 +92,8 @@
         }
 
         .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
+            font-size: 1.4rem;
+            max-width: 700px;
             animation: fadeInUp 1.5s ease-in-out;
         }
 
@@ -103,8 +104,8 @@
 
         .hero button {
             margin-top: 30px;
-            padding: 10px 20px;
-            background: rgba(40, 40, 40, 0.9);
+            padding: 12px 25px;
+            background: rgba(50, 50, 50, 0.9);
             border: 1px solid #fff;
             border-radius: 5px;
             color: #fff;
@@ -122,22 +123,26 @@
             padding: 60px 20px;
             background: rgba(0, 0, 0, 0.95);
             border-radius: 15px;
-            margin: 20px auto;
+            margin: 30px auto;
             max-width: 1200px;
             animation: fadeIn 2s ease-in-out;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .content-section:nth-child(even) {
+            background: linear-gradient(135deg, #1a1a1a, #333333);
         }
 
         .content-section h2 {
-            margin-bottom: 20px;
-            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-size: 2.8rem;
             color: #fff;
             text-transform: uppercase;
         }
 
         .content-section p {
-            font-size: 1rem;
-            line-height: 1.5;
+            font-size: 1.1rem;
+            line-height: 1.8;
             color: #ccc;
             margin-bottom: 40px;
         }
@@ -152,9 +157,9 @@
         .card {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
             padding: 20px;
-            width: 300px;
+            width: 280px;
             text-align: left;
             transition: transform 0.3s ease, background-color 0.3s;
         }
@@ -178,24 +183,32 @@
 
         .card p {
             font-size: 0.9rem;
-            color: #ccc;
+            color: #ddd;
         }
 
         footer {
-            padding: 20px;
+            padding: 30px;
             text-align: center;
             background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.6);
         }
 
         footer p {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #aaa;
         }
 
         @media screen and (max-width: 768px) {
             nav {
-                flex-direction: column;
                 display: none;
+                flex-direction: column;
+                background: rgba(0, 0, 0, 0.9);
+                position: absolute;
+                top: 70px;
+                right: 0;
+                width: 100%;
+                padding: 20px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             }
 
             .menu-icon {
@@ -204,36 +217,21 @@
                 cursor: pointer;
             }
 
-            .mobile-nav {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                background-color: rgba(0, 0, 0, 0.9);
-                position: absolute;
-                width: 100%;
-                top: 70px;
-                left: 0;
-                padding: 20px 0;
-                z-index: 1000;
-            }
-
-            .mobile-nav a {
-                color: #fff;
-                padding: 10px 20px;
+            nav a {
+                display: block;
+                margin: 10px 0;
                 text-align: center;
-                border-radius: 5px;
-                transition: background-color 0.3s;
             }
 
-            .mobile-nav a:hover {
-                background-color: #333;
+            nav.show {
+                display: flex;
             }
         }
     </style>
     <script>
         function toggleMenu() {
             const nav = document.querySelector('nav');
-            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+            nav.classList.toggle('show');
         }
     </script>
 </head>
