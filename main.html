@@ -36,41 +36,30 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            animation: slideDown 0.5s ease-out;
-        }
-
-        @keyframes slideDown {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(0); }
         }
 
         header .logo {
             font-size: 1.5rem;
             font-weight: bold;
             color: #fff;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        .menu-icon {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #fff;
         }
 
         nav {
             display: flex;
+            gap: 20px;
         }
 
         nav a {
-            margin: 0 15px;
             text-decoration: none;
             color: #fff;
             font-size: 1.1rem;
-            transition: color 0.3s;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        nav a:hover {
+        nav a:hover, nav a.active {
+            background-color: #333;
             color: #aaa;
         }
 
@@ -83,7 +72,6 @@
             text-align: center;
             background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
             animation: pulseBg 8s infinite;
-            color: #fff;
         }
 
         @keyframes pulseBg {
@@ -123,7 +111,6 @@
             cursor: pointer;
             font-size: 1rem;
             transition: background 0.3s, transform 0.2s;
-            animation: fadeInUp 2s ease-in-out;
         }
 
         .hero button:hover {
@@ -172,6 +159,13 @@
             transition: transform 0.3s ease, background-color 0.3s;
         }
 
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
         .card:hover {
             transform: scale(1.1);
             background-color: rgba(255, 255, 255, 0.2);
@@ -187,32 +181,10 @@
             color: #ccc;
         }
 
-        .additional-section {
-            padding: 80px 50px;
-            background: linear-gradient(135deg, #1a1a1a, #333333);
-            color: #fff;
-            text-align: center;
-            margin: 40px auto;
-            max-width: 1200px;
-            border-radius: 15px;
-            animation: fadeIn 2.5s ease-in-out;
-        }
-
-        .additional-section h2 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-        }
-
-        .additional-section p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-
         footer {
             padding: 20px;
             text-align: center;
             background-color: rgba(0, 0, 0, 0.95);
-            animation: fadeIn 2s ease-in-out;
         }
 
         footer p {
@@ -221,23 +193,47 @@
         }
 
         @media screen and (max-width: 768px) {
-            .menu-icon {
-                display: block;
-            }
-
             nav {
+                flex-direction: column;
                 display: none;
             }
 
-            .mobile-nav.active {
+            .menu-icon {
+                display: block;
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+            .mobile-nav {
                 display: flex;
+                flex-direction: column;
+                gap: 10px;
+                background-color: rgba(0, 0, 0, 0.9);
+                position: absolute;
+                width: 100%;
+                top: 70px;
+                left: 0;
+                padding: 20px 0;
+                z-index: 1000;
+            }
+
+            .mobile-nav a {
+                color: #fff;
+                padding: 10px 20px;
+                text-align: center;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+
+            .mobile-nav a:hover {
+                background-color: #333;
             }
         }
     </style>
     <script>
         function toggleMenu() {
-            const mobileNav = document.querySelector('.mobile-nav');
-            mobileNav.classList.toggle('active');
+            const nav = document.querySelector('nav');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
         }
     </script>
 </head>
@@ -251,12 +247,6 @@
             <a href="#artists">ARTISTS</a>
             <a href="#check">POTENTIAL CHECK</a>
         </nav>
-        <div class="mobile-nav">
-            <a href="#news">NEWS</a>
-            <a href="#genres">GENRES</a>
-            <a href="#artists">ARTISTS</a>
-            <a href="#check">POTENTIAL CHECK</a>
-        </div>
     </header>
 
     <div class="hero">
@@ -267,36 +257,68 @@
 
     <div id="news" class="content-section">
         <h2>Latest News</h2>
-        <p>Stay updated with the latest happenings in the world of Phonk. From underground trends to viral hits, we bring you the news that matters.</p>
         <div class="card-container">
             <div class="card">
+                <img src="news1.jpg" alt="News Image 1">
                 <h3>News Title 1</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.</p>
+                <p>Catch the latest underground trends that are reshaping Phonk culture worldwide.</p>
             </div>
             <div class="card">
+                <img src="news2.jpg" alt="News Image 2">
                 <h3>News Title 2</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.</p>
+                <p>Phonk events you can’t miss this month—explore gatherings near you!</p>
             </div>
             <div class="card">
+                <img src="news3.jpg" alt="News Image 3">
                 <h3>News Title 3</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.</p>
+                <p>New releases from top artists—your playlist update is here.</p>
             </div>
         </div>
     </div>
 
     <div id="genres" class="content-section">
         <h2>Explore Genres</h2>
-        <p>Dive into the diverse world of Phonk genres. From classic to modern blends, discover the styles that define this unique sound.</p>
+        <div class="card-container">
+            <div class="card">
+                <h3>Classic Phonk</h3>
+                <p>The roots of Phonk: nostalgic beats and Memphis-inspired sounds.</p>
+            </div>
+            <div class="card">
+                <h3>Drift Phonk</h3>
+                <p>High-energy tracks perfect for racing and drifting enthusiasts.</p>
+            </div>
+            <div class="card">
+                <h3>Modern Phonk</h3>
+                <p>Futuristic vibes blending Phonk with electronic and trap elements.</p>
+            </div>
+        </div>
     </div>
 
     <div id="artists" class="content-section">
         <h2>Top Artists</h2>
-        <p>Discover the trailblazers and rising stars of the Phonk scene. Follow their journeys and music that shapes the genre.</p>
+        <div class="card-container">
+            <div class="card">
+                <img src="artist1.jpg" alt="Artist 1">
+                <h3>DJ Smokey</h3>
+                <p>A pioneer of the genre, blending psychedelic elements with classic beats.</p>
+            </div>
+            <div class="card">
+                <img src="artist2.jpg" alt="Artist 2">
+                <h3>Soudiere</h3>
+                <p>Known for his smooth and moody tracks that define chill Phonk.</p>
+            </div>
+            <div class="card">
+                <img src="artist3.jpg" alt="Artist 3">
+                <h3>PlayaPhonk</h3>
+                <p>Bringing new life to old-school samples with a modern twist.</p>
+            </div>
+        </div>
     </div>
 
     <div id="check" class="content-section">
         <h2>Potential Check</h2>
         <p>Test your creations and see how they resonate in the Phonk universe. Submit and explore feedback in this vibrant community!</p>
+        <button>Submit Your Track</button>
     </div>
 
     <footer>
