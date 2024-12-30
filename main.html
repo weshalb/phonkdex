@@ -1,160 +1,156 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHONKDEX</title>
+    <title>PhonkDex</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #1a1a1a;
-            color: #f1f1f1;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e1e2e, #121214);
+            color: #fff;
+            overflow-x: hidden;
         }
 
         header {
-            background-color: #333;
-            padding: 10px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        .logo {
-            font-size: 24px;
+        header .logo {
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #ff4081;
+            color: #ff6347;
         }
 
-        .nav-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-
-        .nav-links li {
-            margin-left: 20px;
-        }
-
-        .nav-links a {
-            color: #f1f1f1;
+        header nav a {
+            margin: 0 15px;
             text-decoration: none;
-            font-size: 18px;
-            transition: color 0.3s;
+            color: #fff;
+            font-size: 1.1rem;
         }
 
-        .nav-links a:hover {
-            color: #ff4081;
+        header nav a:hover {
+            color: #ff6347;
         }
 
         .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 50px 20px;
-            background-color: #222;
-            border-radius: 10px;
-            margin: 20px;
+            background: url('placeholder.jpg') center/cover no-repeat;
+            animation: backgroundScroll 10s linear infinite;
+        }
+
+        @keyframes backgroundScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: -100% 0; }
         }
 
         .hero h1 {
-            font-size: 36px;
+            font-size: 3rem;
             margin-bottom: 20px;
         }
 
         .hero p {
-            font-size: 18px;
-            margin-bottom: 20px;
+            font-size: 1.2rem;
+            max-width: 600px;
         }
 
-        .hero button {
-            padding: 10px 20px;
-            background-color: #ff4081;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .content-section {
+            padding: 50px;
+            text-align: center;
         }
 
-        .hero button:hover {
-            background-color: #e91e63;
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        section {
-            padding: 20px;
-            margin: 20px;
+        .card {
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            background-color: #2a2a2a;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            width: 300px;
+            text-align: left;
+            transition: transform 0.3s ease;
         }
 
-        h2 {
-            font-size: 28px;
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card h3 {
             margin-bottom: 15px;
         }
 
-        p {
-            font-size: 16px;
-            line-height: 1.5;
+        .card p {
+            font-size: 0.9rem;
         }
 
-        @media (max-width: 600px) {
-            .nav-links {
-                flex-direction: column;
-            }
-            .nav-links li {
-                margin: 10px 0;
-            }
-            .hero h1 {
-                font-size: 28px;
-            }
-            .hero p {
-                font-size: 16px;
-            }
+        footer {
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        footer p {
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
     <header>
+        <div class="logo">PhonkDex</div>
         <nav>
-            <div class="logo">PHONKDEX</div>
-            <ul class="nav-links">
-                <li><a href="#home">Start</a></li>
-                <li><a href="#about">Über uns</a></li>
-                <li><a href="#gallery">Galerie</a></li>
-                <li><a href="#contact">Kontakt</a></li>
-            </ul>
+            <a href="#news">NEWS</a>
+            <a href="#genres">GENRES</a>
+            <a href="#artists">ARTISTS</a>
+            <a href="#check">POTENTIAL CHECK</a>
         </nav>
     </header>
 
-    <main>
-        <section id="home" class="hero">
-            <h1>Willkommen bei PHONKDEX</h1>
-            <p>Hier ist Ihr Ziel für die neuesten Trends in der Musik und Kultur. Erleben Sie die besten Phonk-Beats und mehr.</p>
-            <button>Erfahren Sie mehr</button>
-        </section>
+    <div class="hero">
+        <h1>Welcome to PhonkDex</h1>
+        <p>Your ultimate platform for everything phonk. Discover news, explore genres, find artists, and check the potential of your creations!</p>
+    </div>
 
-        <section id="about">
-            <h2>Über uns</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet accumsan arcu. Vivamus auctor lorem sit amet libero hendrerit, eu tincidunt dui tristique.</p>
-        </section>
+    <div id="news" class="content-section">
+        <h2>Latest News</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3>News Title 1</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.</p>
+            </div>
+            <div class="card">
+                <h3>News Title 2</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.</p>
+            </div>
+            <div class="card">
+                <h3>News Title 3</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.</p>
+            </div>
+        </div>
+    </div>
 
-        <section id="gallery">
-            <h2>Galerie</h2>
-            <p>Hier können Sie einige unserer besten Momente sehen. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </section>
-
-        <section id="contact">
-            <h2>Kontakt</h2>
-            <p>Wenn Sie Fragen haben, zögern Sie nicht, uns zu kontaktieren. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
-        </section>
-    </main>
+    <footer>
+        <p>&copy; 2024 PhonkDex. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
