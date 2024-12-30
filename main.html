@@ -212,7 +212,7 @@
             }
 
             .menu-icon {
-                display: none !important;
+                display: block;
                 font-size: 2rem;
                 cursor: pointer;
             }
@@ -227,6 +227,19 @@
                 display: flex;
             }
         }
+
+        @media screen and (min-width: 769px) {
+    .menu-icon {
+        display: none !important; /* Ensure it overrides other rules */
+    }
+
+    nav {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        box-shadow: none;
+    }
     </style>
     <script>
         function toggleMenu() {
