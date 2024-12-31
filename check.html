@@ -105,11 +105,16 @@
     font-size: 1rem;
     opacity: 0; /* Start hidden */
     transform: translateY(20px); /* Start slightly lower */
-    transition: opacity 1s ease-out, transform 1s ease-out;
+    transition: opacity 1s ease-out, transform 1s ease-out, scale 0.2s ease-in-out;
     animation: fadeIn 1s ease-out forwards;
     animation-delay: 1.5s; /* Adjust timing if needed */
 }
-
+        
+.hero button:hover {
+            background: rgba(80, 80, 80, 0.9);
+            transform: scale(1.1);
+        }
+        
 @keyframes fadeIn {
     to {
         opacity: 1;
@@ -118,10 +123,7 @@
 }
 
 
-        .hero button:hover {
-            background: rgba(80, 80, 80, 0.9);
-            transform: scale(1.1);
-        }
+        
 
         .content-section button {
             margin-top: 30px;
