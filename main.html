@@ -220,62 +220,61 @@
         }
 
         @media screen and (max-width: 768px) {
-            nav {
-                display: none;
-                flex-direction: column;
-                background: rgba(0, 0, 0, 0.9);
-                position: absolute;
-                top: 70px;
-                right: 0;
-                width: 100%;
-                padding: 20px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            }
+    nav {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 60px; /* Adjusted for smaller header height */
+        right: 0;
+        width: 100%;
+        padding: 15px; /* Reduced padding for a compact look */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
 
-            .menu-icon {
-                display: block;
-                font-size: 2rem;
-                cursor: pointer;
-            }
+    .menu-icon {
+        display: block;
+        font-size: 1.5rem; /* Smaller menu icon */
+        cursor: pointer;
+    }
 
-            nav a {
-                display: block;
-                margin: 10px 0;
-                text-align: center;
-            }
+    nav a {
+        display: block;
+        margin: 8px 0; /* Reduced spacing between links */
+        text-align: center;
+        font-size: 0.9rem; /* Smaller text size */
+        padding: 6px 10px; /* Smaller padding */
+    }
 
-            nav.show {
-                display: flex;
-            }
+    nav.show {
+        display: flex;
+    }
 
-            body {
+    body {
         font-size: 90%; /* Reduce the base font size */
     }
 
     .hero h1 {
-        font-size: 3rem; /* Adjust the hero section heading */
+        font-size: 2.8rem; /* Adjust the hero section heading */
     }
 
     .hero p {
-        font-size: 1.2rem; /* Adjust the hero section paragraph */
-    }
-
-    nav a {
-        font-size: 1rem; /* Reduce navigation link size */
+        font-size: 1rem; /* Adjust the hero section paragraph */
     }
 
     .content-section h2 {
-        font-size: 2rem; /* Adjust section titles */
+        font-size: 1.8rem; /* Adjust section titles */
     }
 
     .content-section p, .card p {
-        font-size: 0.9rem; /* Adjust general text and card text */
+        font-size: 0.85rem; /* Adjust general text and card text */
     }
 
     footer p {
-        font-size: 0.8rem; /* Adjust footer text */
+        font-size: 0.7rem; /* Adjust footer text */
     }
-        }
+}
+
 
         @media screen and (min-width: 769px) {
     .menu-icon {
