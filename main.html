@@ -306,6 +306,12 @@
             const nav = document.querySelector('nav');
             nav.classList.toggle('show');
         }
+
+        function scrollToNews() {
+    const firstQuestion = document.getElementById("news");
+    firstQuestion.scrollIntoView({ behavior: "smooth" });
+}
+
     </script>
 </head>
 <body>
@@ -323,7 +329,7 @@
     <div class="hero">
         <h1>Welcome to PhonkDex</h1>
         <p>Your ultimate platform for everything phonk related. Discover news, explore genres, find artists, and check the potential of your creations!</p>
-        <button>Explore Now</button>
+        <button onclick="scrollToNews()">Explore Now</button>
     </div>
 
     <div id="news" class="content-section">
