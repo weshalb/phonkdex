@@ -310,8 +310,13 @@
 
             html, body {
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto; /* Ensure vertical scrolling works */
 }
+
+            html {
+    overflow-x: hidden; /* Ensure no horizontal scrolling at the root level */
+}
+
 
 header, nav, .content-section, .hero {
     position: relative;
