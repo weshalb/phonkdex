@@ -146,7 +146,7 @@
         }
 
         footer {
-            padding: 15px;
+            padding: 30px;
             text-align: center;
             background-color: rgba(0, 0, 0, 0.95);
             box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.6);
@@ -158,44 +158,82 @@
         }
 
         @media screen and (max-width: 768px) {
-            nav {
-                display: none;
-                flex-direction: column;
-                background: rgba(0, 0, 0, 0.9);
-                position: absolute;
-                top: 60px;
-                right: 0;
-                width: 100%;
-                padding: 15px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            }
+    nav {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 60px; /* Adjusted for smaller header height */
+        right: 0;
+        width: 100%;
+        padding: 15px; /* Reduced padding for a compact look */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
 
-            .menu-icon {
-                display: block;
-                font-size: 1.5rem;
-                cursor: pointer;
-            }
+    .menu-icon {
+        display: block;
+        font-size: 1.5rem; /* Smaller menu icon */
+        cursor: pointer;
+    }
 
-            nav a {
-                display: block;
-                margin: 8px 0;
-                text-align: center;
-                font-size: 0.9rem;
-                padding: 6px 10px;
-            }
+    nav a {
+        display: block;
+        margin: 8px 0; /* Reduced spacing between links */
+        text-align: center;
+        font-size: 0.9rem; /* Smaller text size */
+        padding: 6px 10px; /* Smaller padding */
+    }
 
-            nav.show {
-                display: flex;
-            }
+    nav.show {
+        display: flex;
+    }
 
-            .content h1 {
-                font-size: 2.2rem;
-            }
+    body {
+        font-size: 90%; /* Reduce the base font size */
+    }
 
-            .content p {
-                font-size: 1rem;
-            }
-        }
+    .hero h1 {
+        font-size: 2.8rem; /* Adjust the hero section heading */
+    }
+
+    .hero p {
+        font-size: 1rem; /* Adjust the hero section paragraph */
+    }
+
+    .content-section h2 {
+        font-size: 1.8rem; /* Adjust section titles */
+    }
+
+    .content-section p, .card p {
+        font-size: 0.85rem; /* Adjust general text and card text */
+    }
+
+    footer p {
+        font-size: 0.7rem; /* Adjust footer text */
+    }
+}
+
+        @media screen and (min-width: 769px) {
+    .menu-icon {
+        display: none !important; /* Ensure it overrides other rules */
+    }
+
+    nav {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        box-shadow: none;
+    }
+
+            html, body {
+    height: 100%;
+    overflow-y: auto; /* Ensure vertical scrolling works */
+}
+
+            html {
+    overflow-x: hidden; /* Ensure no horizontal scrolling at the root level */
+}
     </style>
     <script>
 
