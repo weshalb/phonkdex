@@ -21,6 +21,15 @@
             animation: gradientMove 10s infinite alternate;
             scroll-behavior: smooth;
         }
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1; /* Erzwingt, dass der Hauptinhalt den Platz einnimmt */
+}
 
         @keyframes gradientMove {
             0% { background-position: 0% 50%; }
