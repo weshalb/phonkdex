@@ -275,8 +275,28 @@
     }
 }
 
+        @media screen and (min-width: 769px) {
+    .menu-icon {
+        display: none !important; /* Ensure it overrides other rules */
+    }
 
+    nav {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        box-shadow: none;
+    }
 
+            html, body {
+    height: 100%;
+    overflow-y: auto; /* Ensure vertical scrolling works */
+}
+
+            html {
+    overflow-x: hidden; /* Ensure no horizontal scrolling at the root level */
+}
+        }
 
            
 
