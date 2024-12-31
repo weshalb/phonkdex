@@ -195,8 +195,10 @@
         }
 
         function calculateResult() {
-            const totalQuestions = 45; // Update this to the total number of questions
-            const percentage = Math.round((score / (totalQuestions * 2)) * 100);
+            const totalQuestions = 35; // Update this to the actual number of questions
+const maxScore = totalQuestions * 2; // Each question's max score is 2 for "Yes"
+const percentage = Math.round((score / maxScore) * 100);
+
 
             let feedback = "";
 
