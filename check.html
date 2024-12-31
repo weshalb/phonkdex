@@ -105,9 +105,10 @@
     font-size: 1rem;
     opacity: 0; /* Start hidden */
     transform: translateY(20px); /* Start slightly lower */
-    transition: opacity 1s ease-out, transform 0.3s ease-in-out; /* Ensure hover scaling works smoothly */
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Ensure smooth hover scaling */
     animation: fadeIn 1s ease-out forwards;
     animation-delay: 1.5s; /* Adjust timing if needed */
+    animation-fill-mode: forwards; /* Ensure the final state of the animation persists */
 }
 
 .hero button:hover {
@@ -121,6 +122,7 @@
         transform: translateY(0); /* Move to its final position */
     }
 }
+
 
 
 
