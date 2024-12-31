@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potential Check</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d, #262626);
+            color: #fff;
+            overflow-x: hidden;
+            animation: gradientMove 10s infinite alternate;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .content {
+            padding: 120px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #ccc;
+        }
+
+        .question {
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            text-align: left;
+        }
+
+        .question h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .answers button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: rgba(50, 50, 50, 0.9);
+            border: 1px solid #fff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .answers button:hover {
+            background: rgba(80, 80, 80, 0.9);
+            transform: scale(1.1);
+        }
+
+        .result {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .result h2 {
+            margin-bottom: 15px;
+        }
+
+        .result p {
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+
+        .questions-container {
+            max-height: 60vh;
+            overflow-y: scroll;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+        }
+    </style>
+    <script>
+        let score = 0;
+
+        function answerQuestion(value) {
+            score += value;
+        }
+
+        function calculateResult() {
+            const percentage = Math.round((score / 90) * 100);
+
+            let feedback = "";
+
+            if (percentage >= 90) {
+                feedback = "Congratulations! Your track has immense potential to go viral. It checks most of the boxes for what makes a great phonk song. Focus on marketing strategies like TikTok edits, creating striking visuals, and reaching out to niche communities. With the right push, this track could dominate playlists and become a trendsetter!";
+            } else if (percentage >= 70) {
+                feedback = "Your track is strong and has good potential. With some polishing and strategic promotion, it could reach a wider audience. Consider improving aspects like its hook, energy, or production quality. A strong visual identity and engagement with underground phonk communities can boost its visibility.";
+            } else if (percentage >= 50) {
+                feedback = "Your track has potential, but it needs refinement to stand out. Pay attention to elements like its emotional resonance, memorability, and how well it fits into trending content. Experiment with better production or visuals to make it more appealing.";
+            } else if (percentage >= 30) {
+                feedback = "Your track shows some promise but requires significant improvements. Focus on key areas like energy, catchiness, and production quality. Study popular phonk tracks for inspiration and see how you can elevate your track to the next level.";
+            } else {
+                feedback = "At this stage, your track has limited potential. It’s worth revisiting the basics of what makes a track engaging and memorable. Consider rebuilding elements like melody, energy, and overall structure. Don’t give up—use feedback to grow!";
+            }
+
+            document.getElementById("result").innerHTML = `
+                <div class="result">
+                    <h2>Potential Score: ${percentage}%</h2>
+                    <p>${feedback}</p>
+                </div>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">PhonkDex</div>
+    </header>
+
+    <div class="content">
+        <h1>Potential Check</h1>
+        <p>Answer the questions below to see how much potential your track has to go viral!</p>
+
+        <div class="questions-container">
+            <!-- Questions -->
+            <div class="question"><h3>1. Does the song sound retro or old-school?</h3><div class="answers"><button onclick="answerQuestion(2)">Yes</button><button onclick="answerQuestion(1)">Maybe</button><button onclick="answerQuestion(0)">No</button></div></div>
+            <div class="question"><h3>2. Is there a dark or moody vibe?</h3><div class="answers"><button onclick="answerQuestion(2)">Yes</button><button onclick="answerQuestion(1)">Maybe</button><button onclick="answerQuestion(0)">No</button></div></div>
+            <div class="question"><h3>3. Does it have a catchy melody?</h3><div class="answers"><button onclick="answerQuestion(2)">Yes</button><button onclick="answerQuestion(1)">Maybe</button><button onclick="answerQuestion(0)">No</button></div></div>
+            <div class="question"><h3>4. Is it high-energy or engaging?</h3><div class="answers"><button onclick="answerQuestion(2)">Yes</button><button onclick="answerQuestion(1)">Maybe</button><button onclick="answerQuestion(0)">No</button></div></div>
+            <div class="question"><h3>5. Does it work for TikTok or Instagram edits?</h3><div class="answers"><button onclick="answerQuestion(2)">Yes</button><button onclick="answerQuestion(1)">Maybe</button><button onclick="answerQuestion(0)">No</button></div></div>
+            <div class="question"><h3>6. Is the cover art visually striking?</h3><div class="answers"><button onclick="answerQuestion(2)">Yes</button><button onclick="answerQuestion(1)">Maybe</button><button onclick="answerQuestion(0)">No</button></div></div>
+            <!-- Add all other questions from the comprehensive list following the same pattern -->
+        </div>
+
+        <button style="margin-top: 20px; padding: 15px 30px; font-size: 1.2rem;" onclick="calculateResult()">Calculate Result</button>
+
+        <div id="result"></div>
+    </div>
+</body>
+</html>
