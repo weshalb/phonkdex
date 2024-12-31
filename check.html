@@ -393,7 +393,7 @@
     
 let score = 0;
 let answeredQuestions = {}; // Track scores by questionId
-
+ calculateResult();
 function answerQuestion(questionId, value, button) {
     // If the question was already answered, subtract the previous value
     if (answeredQuestions[questionId] !== undefined) {
@@ -754,9 +754,6 @@ function calculateResult() {
 
             <!-- Repeat for all 45 questions -->
         
-
-        <button style="margin-top: 20px; padding: 15px 30px; font-size: 1.2rem;" onclick="calculateResult()">Calculate Result</button>
-
         <div id="result"></div>
     </div>
 
