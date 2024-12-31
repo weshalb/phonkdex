@@ -391,7 +391,7 @@
         }
 
     
-        let score = 0;
+let score = 0;
 let answeredQuestions = {}; // Track scores by questionId
 
 function answerQuestion(questionId, value, button) {
@@ -419,17 +419,14 @@ function answerQuestion(questionId, value, button) {
         button.classList.add("clicked-no");
     }
 
-    // Debug log for tracking
-    console.log(`Question ${questionId}: ${value}, Total Score: ${score}`);
+    // Update the result automatically
+    calculateResult();
 }
 
 function calculateResult() {
     const totalQuestions = 35; // Adjust this to the actual number of questions
     const maxScore = totalQuestions * 2; // Maximum score if all questions are "Yes"
     const percentage = Math.round((score / maxScore) * 100);
-
-    // Debug log for calculation
-    console.log(`Final Score: ${score}, Max Score: ${maxScore}, Percentage: ${percentage}%`);
 
     let feedback = "";
 
@@ -445,6 +442,7 @@ function calculateResult() {
         feedback = "At this stage, your track has limited potential. It’s worth revisiting the basics of what makes a track engaging and memorable. Consider rebuilding elements like melody, energy, and overall structure. Don’t give up—use feedback to grow!";
     }
 
+    // Update the result section
     document.getElementById("result").innerHTML = `
         <div class="result">
             <h2>Potential Score: ${percentage}%</h2>
