@@ -66,18 +66,20 @@
             color: #ddd;
         }
 
-        .hero {
+.hero {
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: linear-gradient(135deg, #000000, #333333, #111111);
+    background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
     animation: pulseBg 8s infinite;
+    position: relative; /* Ensure the pseudo-element stays within this section */
+    overflow: hidden; /* Prevents the pseudo-element from spilling out */
 }
 
-        .hero::after {
+.hero::after {
     content: '';
     position: absolute;
     top: 0;
@@ -86,8 +88,9 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
     pointer-events: none;
-    z-index: 1; /* Place the overlay below the text */
+    z-index: 1; /* Keeps the overlay below text */
 }
+
 
 .hero h1,
 .hero p,
