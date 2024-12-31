@@ -159,8 +159,6 @@
             text-align: center;
             background-color: rgba(0, 0, 0, 0.95);
             box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.6);
-            color: #aaa;
-            margin-top: 50px;
         }
 
         footer p {
@@ -169,58 +167,67 @@
     </style>
     <script>
         let score = 0;
-        let answeredQuestions = new Set();
+let answeredQuestions = {}; // Track scores by questionId
 
-        function answerQuestion(questionId, value, button) {
-            // Check if the question has already been answered
-            if (!answeredQuestions.has(questionId)) {
-                score += value;
-                answeredQuestions.add(questionId);
-            }
+function answerQuestion(questionId, value, button) {
+    // If the question was already answered, subtract the previous value
+    if (answeredQuestions[questionId] !== undefined) {
+        score -= answeredQuestions[questionId];
+    }
 
-            // Reset all buttons' styles for this question
-            const buttons = button.parentElement.children;
-            for (let btn of buttons) {
-                btn.classList.remove("clicked-yes", "clicked-maybe", "clicked-no");
-            }
+    // Update the score and mark the question as answered
+    score += value;
+    answeredQuestions[questionId] = value;
 
-            // Apply the appropriate style
-            if (value === 2) {
-                button.classList.add("clicked-yes");
-            } else if (value === 1) {
-                button.classList.add("clicked-maybe");
-            } else {
-                button.classList.add("clicked-no");
-            }
-        }
+    // Reset button styles for the current question
+    const buttons = button.parentElement.children;
+    for (let btn of buttons) {
+        btn.classList.remove("clicked-yes", "clicked-maybe", "clicked-no");
+    }
 
-        function calculateResult() {
-            const totalQuestions = 35; // Update this to the actual number of questions
-const maxScore = totalQuestions * 2; // Each question's max score is 2 for "Yes"
-const percentage = Math.round((score / maxScore) * 100);
+    // Highlight the clicked button
+    if (value === 2) {
+        button.classList.add("clicked-yes");
+    } else if (value === 1) {
+        button.classList.add("clicked-maybe");
+    } else {
+        button.classList.add("clicked-no");
+    }
 
+    // Debug log for tracking
+    console.log(`Question ${questionId}: ${value}, Total Score: ${score}`);
+}
 
-            let feedback = "";
+function calculateResult() {
+    const totalQuestions = 35; // Adjust this to the actual number of questions
+    const maxScore = totalQuestions * 2; // Maximum score if all questions are "Yes"
+    const percentage = Math.round((score / maxScore) * 100);
 
-            if (percentage >= 90) {
-                feedback = "Congratulations! Your track has immense potential to go viral. It checks most of the boxes for what makes a great phonk song. Focus on marketing strategies like TikTok edits, creating striking visuals, and reaching out to niche communities. With the right push, this track could dominate playlists and become a trendsetter!";
-            } else if (percentage >= 70) {
-                feedback = "Your track is strong and has good potential. With some polishing and strategic promotion, it could reach a wider audience. Consider improving aspects like its hook, energy, or production quality. A strong visual identity and engagement with underground phonk communities can boost its visibility.";
-            } else if (percentage >= 50) {
-                feedback = "Your track has potential, but it needs refinement to stand out. Pay attention to elements like its emotional resonance, memorability, and how well it fits into trending content. Experiment with better production or visuals to make it more appealing.";
-            } else if (percentage >= 30) {
-                feedback = "Your track shows some promise but requires significant improvements. Focus on key areas like energy, catchiness, and production quality. Study popular phonk tracks for inspiration and see how you can elevate your track to the next level.";
-            } else {
-                feedback = "At this stage, your track has limited potential. It’s worth revisiting the basics of what makes a track engaging and memorable. Consider rebuilding elements like melody, energy, and overall structure. Don’t give up—use feedback to grow!";
-            }
+    // Debug log for calculation
+    console.log(`Final Score: ${score}, Max Score: ${maxScore}, Percentage: ${percentage}%`);
 
-            document.getElementById("result").innerHTML = `
-                <div class="result">
-                    <h2>Potential Score: ${percentage}%</h2>
-                    <p>${feedback}</p>
-                </div>
-            `;
-        }
+    let feedback = "";
+
+    if (percentage >= 90) {
+        feedback = "Congratulations! Your track has immense potential to go viral. It checks most of the boxes for what makes a great phonk song. Focus on marketing strategies like TikTok edits, creating striking visuals, and reaching out to niche communities. With the right push, this track could dominate playlists and become a trendsetter!";
+    } else if (percentage >= 70) {
+        feedback = "Your track is strong and has good potential. With some polishing and strategic promotion, it could reach a wider audience. Consider improving aspects like its hook, energy, or production quality. A strong visual identity and engagement with underground phonk communities can boost its visibility.";
+    } else if (percentage >= 50) {
+        feedback = "Your track has potential, but it needs refinement to stand out. Pay attention to elements like its emotional resonance, memorability, and how well it fits into trending content. Experiment with better production or visuals to make it more appealing.";
+    } else if (percentage >= 30) {
+        feedback = "Your track shows some promise but requires significant improvements. Focus on key areas like energy, catchiness, and production quality. Study popular phonk tracks for inspiration and see how you can elevate your track to the next level.";
+    } else {
+        feedback = "At this stage, your track has limited potential. It’s worth revisiting the basics of what makes a track engaging and memorable. Consider rebuilding elements like melody, energy, and overall structure. Don’t give up—use feedback to grow!";
+    }
+
+    document.getElementById("result").innerHTML = `
+        <div class="result">
+            <h2>Potential Score: ${percentage}%</h2>
+            <p>${feedback}</p>
+        </div>
+    `;
+}
+
     </script>
 </head>
 <body>
