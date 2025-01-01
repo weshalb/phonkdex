@@ -387,6 +387,56 @@
     color: #fff;
 }
 
+/* News Card Styling */
+.news-card {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, background-color 0.3s;
+}
+
+.news-card img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.news-card .news-content {
+    padding: 20px;
+    text-align: left;
+}
+
+.news-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.news-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #ddd;
+}
+
+.news-card:hover {
+    transform: scale(1.03);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Alternating Layout */
+.image-left {
+    flex-direction: row;
+}
+
+.image-right {
+    flex-direction: row-reverse;
+}
+
+/* Pagination Styling */
 .pagination {
     display: flex;
     justify-content: center;
@@ -414,14 +464,6 @@
     background: rgba(80, 80, 80, 0.9);
 }
 
-        .card a {
-    text-decoration: none; /* Removes the underline */
-    color: inherit; /* Ensures the link inherits the text color */
-}
-
-.card a:hover {
-    color: inherit; /* Keeps the hover style consistent */
-}
 
     </style>
 
@@ -431,6 +473,11 @@
 
     <script>
 
+        function scrollToSearch() {
+    const firstQuestion = document.getElementById("search");
+    firstQuestion.scrollIntoView({ behavior: "smooth" });
+}
+        
         function toggleMenu() {
             const nav = document.querySelector('nav');
             nav.classList.toggle('show');
@@ -471,37 +518,39 @@
         }
 
         // Display news items with pagination
-        function displayNews(page = 1) {
-            const newsContainer = document.getElementById('news-container');
-            const pagination = document.getElementById('pagination');
-            newsContainer.innerHTML = ''; // Clear previous content
-            pagination.innerHTML = ''; // Clear pagination buttons
+function displayNews(page = 1) {
+    const newsContainer = document.getElementById('news-container');
+    const pagination = document.getElementById('pagination');
+    newsContainer.innerHTML = ''; // Clear previous content
+    pagination.innerHTML = ''; // Clear pagination buttons
 
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const visibleNews = newsData.slice(startIndex, endIndex);
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const visibleNews = newsData.slice(startIndex, endIndex);
 
-            // Generate news cards
-            // Generate news cards
-visibleNews.forEach(news => {
-    const card = `
-        <a href="news/${news.id}.html" class="card">
-            <img src="${news.image}" alt="${news.title}">
-            <h3>${news.title}</h3>
-            <p>${news.description}</p>
-        </a>
-    `;
-    newsContainer.innerHTML += card;
-});
+    // Generate news cards with alternating layout
+    visibleNews.forEach((news, index) => {
+        const isOdd = index % 2 === 0;
+        const card = `
+            <div class="news-card ${isOdd ? 'image-left' : 'image-right'}">
+                <img src="${news.image}" alt="${news.title}">
+                <div class="news-content">
+                    <h3>${news.title}</h3>
+                    <p>${news.description}</p>
+                </div>
+            </div>
+        `;
+        newsContainer.innerHTML += card;
+    });
 
+    // Generate pagination buttons
+    const totalPages = Math.ceil(newsData.length / itemsPerPage);
+    for (let i = 1; i <= totalPages; i++) {
+        const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+        pagination.innerHTML += button;
+    }
+}
 
-            // Generate pagination buttons
-            const totalPages = Math.ceil(newsData.length / itemsPerPage);
-            for (let i = 1; i <= totalPages; i++) {
-                const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-                pagination.innerHTML += button;
-            }
-        }
 
         // Change to a specific page
         function changePage(page) {
@@ -543,9 +592,9 @@ visibleNews.forEach(news => {
     </header>
 
      <div class="hero">
-        <h1>Potential Check</h1>
-        <p>Answer the questions below to see how much potential your track has to go viral!</p>
-        <button onclick="scrollToFirstQuestion()">Explore Now</button>
+        <h1>News</h1>
+        <p>Check out the latest news, all around phonk!</p>
+        <button onclick="scrollToSearch()">Read Now</button>
     </div>
     
     <div class="content-section">
