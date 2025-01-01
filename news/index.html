@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potential Check</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d, #262626);
+            color: #fff;
+            overflow-x: hidden;
+            animation: gradientMove 10s infinite alternate;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: #444;
+            color: #ddd;
+        }
+.hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(135deg, #000000, #222222, #555555, #111111); animation: pulseBg 8s infinite; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8); } .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0.1)); pointer-events: none; z-index: 1; } .hero h1, .hero p, .hero button { position: relative; z-index: 2; /* Place the text above the overlay */ }
+
+        @keyframes pulseBg {
+            0%, 100% { background-size: 150%; }
+            50% { background-size: 200%; }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            animation: zoomIn 1s ease-out;
+        }
+
+        @keyframes zoomIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+.hero button {
+    margin-top: 30px;
+    padding: 12px 25px;
+    background: rgba(50, 50, 50, 0.9);
+    border: 1px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0; /* Start hidden */
+    transform: translateY(20px); /* Start slightly lower */
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Ensure smooth hover scaling */
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 1.5s; /* Adjust timing if needed */
+    animation-fill-mode: forwards; /* Ensure the final state of the animation persists */
+}
+
+.hero button:hover {
+    background: rgba(80, 80, 80, 0.9); /* Darken background on hover */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Move to its final position */
+    }
+}
+
+
+
+
+        
+
+        .content-section button {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .content-section button:hover {
+            background: rgba(80, 80, 80, 0.9);
+            transform: scale(1.1);
+        }
+
+        .content-section {
+            padding: 60px 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 15px;
+            margin: 30px auto;
+            max-width: 1200px;
+            animation: fadeIn 2s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .content-section:nth-child(even) {
+            background: linear-gradient(135deg, #1a1a1a, #333333);
+        }
+
+        .content-section h2 {
+            margin-bottom: 30px;
+            font-size: 2.8rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+.question {
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            text-align: left;
+        }
+
+        .question h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .answers button {
+            padding: 12px 25px;
+            margin: 5px;
+            background: rgba(50, 50, 50, 0.9);
+            border: 1px solid #fff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .answers button.clicked-yes {
+            background: green;
+            color: #fff;
+        }
+
+        .answers button.clicked-maybe {
+            background: orange;
+            color: #000;
+        }
+
+        .answers button.clicked-no {
+            background: red;
+            color: #fff;
+        }
+
+        .answers button:hover {
+            transform: scale(1.1);
+        }
+
+        .result {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .result h2 {
+            margin-bottom: 15px;
+        }
+
+        .result p {
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            width: 280px;
+            text-align: left;
+            transition: transform 0.3s ease, background-color 0.3s;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        footer {
+            padding: 30px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        footer p {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        @media screen and (max-width: 768px) {
+    nav {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 60px; /* Adjusted for smaller header height */
+        right: 0;
+        width: 100%;
+        padding: 15px; /* Reduced padding for a compact look */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .menu-icon {
+        display: block;
+        font-size: 1.5rem; /* Smaller menu icon */
+        cursor: pointer;
+    }
+
+    nav a {
+        display: block;
+        margin: 8px 0; /* Reduced spacing between links */
+        text-align: center;
+        font-size: 0.9rem; /* Smaller text size */
+        padding: 6px 10px; /* Smaller padding */
+    }
+
+    nav.show {
+        display: flex;
+    }
+
+    body {
+        font-size: 90%; /* Reduce the base font size */
+    }
+
+    .hero h1 {
+        font-size: 2.8rem; /* Adjust the hero section heading */
+    }
+
+    .hero p {
+        font-size: 1rem; /* Adjust the hero section paragraph */
+    }
+
+    .content-section h2 {
+        font-size: 1.8rem; /* Adjust section titles */
+    }
+
+    .content-section p, .card p {
+        font-size: 0.85rem; /* Adjust general text and card text */
+    }
+
+    footer p {
+        font-size: 0.7rem; /* Adjust footer text */
+    }
+}
+
+
+        @media screen and (min-width: 769px) {
+    .menu-icon {
+        display: none !important; /* Ensure it overrides other rules */
+    }
+
+    nav {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        box-shadow: none;
+    }
+
+            html, body {
+    height: 100%;
+    overflow-y: auto; /* Ensure vertical scrolling works */
+}
+
+            html {
+    overflow-x: hidden; /* Ensure no horizontal scrolling at the root level */
+}
+
+        }
+
+
+    </style>
+
+
+
+
+
+    <script>
+
+        function toggleMenu() {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('show');
+        }
+
+    
+let score = 0;
+let answeredQuestions = {}; // Track scores by questionId
+ calculateResult();
+function answerQuestion(questionId, value, button) {
+    // If the question was already answered, subtract the previous value
+    if (answeredQuestions[questionId] !== undefined) {
+        score -= answeredQuestions[questionId];
+    }
+
+    // Update the score and mark the question as answered
+    score += value;
+    answeredQuestions[questionId] = value;
+
+    // Reset button styles for the current question
+    const buttons = button.parentElement.children;
+    for (let btn of buttons) {
+        btn.classList.remove("clicked-yes", "clicked-maybe", "clicked-no");
+    }
+
+    // Highlight the clicked button
+    if (value === 2) {
+        button.classList.add("clicked-yes");
+    } else if (value === 1) {
+        button.classList.add("clicked-maybe");
+    } else {
+        button.classList.add("clicked-no");
+    }
+
+    // Update the result automatically
+    calculateResult();
+}
+
+function calculateResult() {
+    const totalQuestions = 35; // Adjust this to the actual number of questions
+    const maxScore = totalQuestions * 2; // Maximum score if all questions are "Yes"
+    const percentage = Math.round((score / maxScore) * 100);
+
+    let feedback = "";
+
+    if (percentage >= 90) {
+        feedback = "Congratulations! Your track has immense potential to go viral. It checks nearly all the boxes for what makes a phonk song stand out in today's music landscape. The combination of retro vibes, professional production quality, and a high-energy feel gives it the edge to capture the audience’s attention. To maximize this potential, focus on creating a strong marketing campaign. This includes using platforms like TikTok and Instagram to showcase your track with dynamic edits, eye-catching visuals, and short, engaging loops. Collaborate with niche influencers and content creators to amplify your reach. Engage with phonk and underground music communities to generate organic buzz. Your track has what it takes to dominate playlists, set trends, and become a cultural phenomenon. Now it’s about how you deliver it to the world!";
+    } else if (percentage >= 70) {
+        feedback = "Your track is strong and has significant potential. It’s clear you’ve done a lot of things right, but there’s still room for improvement to make it truly exceptional. Focus on refining elements like the track’s hook. Ensure it’s catchy, memorable, and sticks in the listener’s mind after the first play. Consider the overall energy and flow, ensuring it keeps the audience engaged from start to finish. Enhance your production quality to make it feel polished and professional. Beyond the music, think about the visual identity of your track. Striking cover art and short, cinematic music video clips can help capture attention on social media. Engage with underground communities and leverage platforms like TikTok to test how your track resonates with a broader audience. Small tweaks and focused promotion could push your track to the next level.";
+    } else if (percentage >= 50) {
+        feedback = "Your track shows potential, but there are some key areas that need attention to help it stand out in the competitive music scene. Pay close attention to the emotional connection your track creates with the listener. Does it evoke nostalgia, hype, or deep emotions? If not, think about how you can bring more emotional depth into the melody, lyrics, or overall soundscape. Memorable hooks and standout elements can make your track more appealing and engaging. Experiment with production techniques to make the sound cleaner and more professional. Consider collaborating with visual artists to create unique visuals that elevate your song’s impact. Engage your audience by sharing the creative process behind the track or hosting listening parties to get feedback. With some thoughtful adjustments, your track could capture more attention and gain traction.";
+    } else if (percentage >= 30) {
+        feedback = "Your track has promise, but it needs significant refinement to unlock its potential. Start by focusing on the core elements that make a song engaging, like energy, catchiness, and emotional resonance. Study popular phonk tracks and analyze what makes them memorable. Are the basslines punchy? Do the melodies evoke specific feelings? Try to incorporate similar elements while still maintaining your unique style. Explore ways to improve production quality; even subtle enhancements can make a big difference. If your track feels repetitive or lacks excitement, think about adding dynamic transitions, drops, or unexpected elements to keep listeners hooked. This is a great opportunity to experiment and take risks. Don’t be discouraged; every great artist refines their work through trial and error. Use constructive feedback to rebuild and improve your track.";
+    } else {
+        feedback = "At this stage, your track has limited potential, but that’s not a bad thing. It’s simply a starting point. Think of this as a foundation to build upon. Start by revisiting the basics of what makes a track engaging and memorable. Is the melody distinct? Does it create an emotional impact? Is the energy consistent and compelling? Focus on these aspects to give your track a stronger identity. Experiment with new production techniques, or consider collaborating with more experienced producers or artists for fresh ideas. Don’t be afraid to explore and take inspiration from successful tracks in the genre. Most importantly, seek feedback from others. Whether it’s friends, online communities, or industry professionals. Remember, music is a journey, and every iteration brings you closer to success. Keep creating, learning, and refining your craft!";
+    }
+
+    // Update the result section
+    document.getElementById("result").innerHTML = `
+        <div class="result">
+            <h2>Potential Score: ${percentage}%</h2>
+            <p>${feedback}</p>
+        </div>
+    `;
+}
+
+        function scrollToFirstQuestion() {
+    const firstQuestion = document.getElementById("first-question");
+    firstQuestion.scrollIntoView({ behavior: "smooth" });
+}
+
+
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">PhonkDex</div>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <nav>
+            <a href="#news">NEWS</a>
+            <a href="#genres">GENRES</a>
+            <a href="#artists">ARTISTS</a>
+        </nav>
+    </header>
+
+     <div class="hero">
+        <h1>Potential Check</h1>
+        <p>Answer the questions below to see how much potential your track has to go viral!</p>
+        <button onclick="scrollToFirstQuestion()">Explore Now</button>
+    </div>
+    
+        <div class="content-section" id="first-question">
+            <!-- Example Questions -->
+<div class="question">
+    <h3>1. Does the song sound retro or old-school?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(1, 2, this)">Yes</button>
+        <button onclick="answerQuestion(1, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(1, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>2. Is there a dark or moody vibe?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(2, 2, this)">Yes</button>
+        <button onclick="answerQuestion(2, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(2, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>3. Does it have a catchy melody?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(3, 2, this)">Yes</button>
+        <button onclick="answerQuestion(3, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(3, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>4. Is it high-energy or engaging?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(4, 2, this)">Yes</button>
+        <button onclick="answerQuestion(4, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(4, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>5. Does it work for TikTok or Instagram edits?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(5, 2, this)">Yes</button>
+        <button onclick="answerQuestion(5, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(5, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>6. Is the cover art visually striking?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(6, 2, this)">Yes</button>
+        <button onclick="answerQuestion(6, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(6, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>7. Does the production quality sound professional?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(7, 2, this)">Yes</button>
+        <button onclick="answerQuestion(7, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(7, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>8. Is the track easy to loop?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(8, 2, this)">Yes</button>
+        <button onclick="answerQuestion(8, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(8, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>9. Does it evoke energy or empowerment?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(9, 2, this)">Yes</button>
+        <button onclick="answerQuestion(9, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(9, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>10. Is it memorable and unique?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(10, 2, this)">Yes</button>
+        <button onclick="answerQuestion(10, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(10, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>11. Does it resonate emotionally?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(11, 2, this)">Yes</button>
+        <button onclick="answerQuestion(11, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(11, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>12. Could it fit into curated playlists?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(12, 2, this)">Yes</button>
+        <button onclick="answerQuestion(12, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(12, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>13. Does it align with current trends?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(13, 2, this)">Yes</button>
+        <button onclick="answerQuestion(13, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(13, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>14. Does the track appeal to niche fans?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(14, 2, this)">Yes</button>
+        <button onclick="answerQuestion(14, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(14, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>15. Is the track high-quality and polished?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(15, 2, this)">Yes</button>
+        <button onclick="answerQuestion(15, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(15, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>16. Does it work well with action or gaming content?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(16, 2, this)">Yes</button>
+        <button onclick="answerQuestion(16, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(16, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>17. Could it synchronize with visuals (like drifting cars or cityscapes)?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(17, 2, this)">Yes</button>
+        <button onclick="answerQuestion(17, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(17, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>18. Does it sound fresh or different from other tracks?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(18, 2, this)">Yes</button>
+        <button onclick="answerQuestion(18, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(18, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>19. Are there any unique elements in the beat?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(19, 2, this)">Yes</button>
+        <button onclick="answerQuestion(19, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(19, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>20. Does the song have a strong drop or transition?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(20, 2, this)">Yes</button>
+        <button onclick="answerQuestion(20, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(20, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>21. Is it emotionally impactful?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(21, 2, this)">Yes</button>
+        <button onclick="answerQuestion(21, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(21, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>22. Could it resonate with underground culture?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(22, 2, this)">Yes</button>
+        <button onclick="answerQuestion(22, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(22, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>23. Is the bass punchy but not overwhelming?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(23, 2, this)">Yes</button>
+        <button onclick="answerQuestion(23, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(23, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>24. Does it fit into the DIY/independent phonk style?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(24, 2, this)">Yes</button>
+        <button onclick="answerQuestion(24, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(24, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>25. Does it make you want to replay it?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(25, 2, this)">Yes</button>
+        <button onclick="answerQuestion(25, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(25, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>26. Does it feel nostalgic?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(26, 2, this)">Yes</button>
+        <button onclick="answerQuestion(26, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(26, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>27. Is the song dynamic and engaging throughout?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(27, 2, this)">Yes</button>
+        <button onclick="answerQuestion(27, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(27, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>28. Does it have potential to trend on TikTok?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(28, 2, this)">Yes</button>
+        <button onclick="answerQuestion(28, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(28, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>29. Does the track build excitement as it progresses?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(29, 2, this)">Yes</button>
+        <button onclick="answerQuestion(29, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(29, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>30. Would this fit well in gaming playlists?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(30, 2, this)">Yes</button>
+        <button onclick="answerQuestion(30, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(30, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>31. Does it bring out emotions like nostalgia or hype?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(31, 2, this)">Yes</button>
+        <button onclick="answerQuestion(31, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(31, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>32. Does it feel authentic and true to phonk roots?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(32, 2, this)">Yes</button>
+        <button onclick="answerQuestion(32, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(32, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>33. Could the track gain traction with niche audiences?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(33, 2, this)">Yes</button>
+        <button onclick="answerQuestion(33, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(33, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>34. Would this appeal to content creators?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(34, 2, this)">Yes</button>
+        <button onclick="answerQuestion(34, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(34, 0, this)">No</button>
+    </div>
+</div>
+<div class="question">
+    <h3>35. Does it flow naturally and keep attention?</h3>
+    <div class="answers">
+        <button onclick="answerQuestion(35, 2, this)">Yes</button>
+        <button onclick="answerQuestion(35, 1, this)">Maybe</button>
+        <button onclick="answerQuestion(35, 0, this)">No</button>
+    </div>
+</div>
+
+            <!-- Repeat for all 45 questions -->
+        
+        <div id="result"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PhonkDex. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
