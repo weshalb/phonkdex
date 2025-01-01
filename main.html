@@ -315,13 +315,30 @@
 
         const newsFolderUrl = 'https://phonkdex.de/news/';
 
-    async function fetchNews() {
+    
+    const newsFolderUrl = 'https://raw.githubusercontent.com/yourusername/yourrepository/main/news/';
+
+    async function fetchLatestNews() {
         const newsContainer = document.getElementById('news-container');
-        let i = 1; // Start from the first news file
+        const maxNews = 3; // Limit to 3 latest news
+        let latestNewsIndex = 1;
+
+        // Find the highest index dynamically
         while (true) {
             try {
+                const response = await fetch(`${newsFolderUrl}${latestNewsIndex}.html`);
+                if (!response.ok) break;
+                latestNewsIndex++; // Increment to find the next file
+            } catch (error) {
+                break;
+            }
+        }
+
+        // Fetch the 3 latest files (starting from the highest index)
+        for (let i = latestNewsIndex - 1; i >= Math.max(latestNewsIndex - maxNews, 1); i--) {
+            try {
                 const response = await fetch(`${newsFolderUrl}${i}.html`);
-                if (!response.ok) break; // Stop when no more files are found
+                if (!response.ok) continue;
 
                 const newsHTML = await response.text();
                 const parser = new DOMParser();
@@ -341,17 +358,14 @@
                     </div>
                 `;
                 newsContainer.innerHTML += newsCard;
-
-                i++; // Move to the next news file
             } catch (error) {
-                console.log('No more news files found or an error occurred.');
-                break;
+                console.log(`Error fetching news file ${i}.html`);
             }
         }
     }
 
     // Fetch news on page load
-    window.onload = fetchNews;
+    window.onload = fetchLatestNews;
     </script>
 </head>
 <body>
