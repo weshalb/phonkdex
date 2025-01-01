@@ -414,6 +414,15 @@
     background: rgba(80, 80, 80, 0.9);
 }
 
+        .card a {
+    text-decoration: none; /* Removes the underline */
+    color: inherit; /* Ensures the link inherits the text color */
+}
+
+.card a:hover {
+    color: inherit; /* Keeps the hover style consistent */
+}
+
     </style>
 
 
@@ -473,18 +482,18 @@
             const visibleNews = newsData.slice(startIndex, endIndex);
 
             // Generate news cards
-            visibleNews.forEach(news => {
-                const card = `
-                    <div class="card">
-                        <a href="news/${news.id}.html">
-                            <img src="${news.image}" alt="${news.title}">
-                            <h3>${news.title}</h3>
-                            <p>${news.description}</p>
-                        </a>
-                    </div>
-                `;
-                newsContainer.innerHTML += card;
-            });
+            // Generate news cards
+visibleNews.forEach(news => {
+    const card = `
+        <a href="news/${news.id}.html" class="card">
+            <img src="${news.image}" alt="${news.title}">
+            <h3>${news.title}</h3>
+            <p>${news.description}</p>
+        </a>
+    `;
+    newsContainer.innerHTML += card;
+});
+
 
             // Generate pagination buttons
             const totalPages = Math.ceil(newsData.length / itemsPerPage);
