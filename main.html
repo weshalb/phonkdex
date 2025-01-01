@@ -312,6 +312,46 @@
     firstQuestion.scrollIntoView({ behavior: "smooth" });
 }
 
+
+        const newsFolderUrl = 'https://raw.githubusercontent.com/yourusername/yourrepository/main/news/';
+
+    async function fetchNews() {
+        const newsContainer = document.getElementById('news-container');
+        let i = 1; // Start from the first news file
+        while (true) {
+            try {
+                const response = await fetch(`${newsFolderUrl}${i}.html`);
+                if (!response.ok) break; // Stop when no more files are found
+
+                const newsHTML = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(newsHTML, 'text/html');
+
+                // Extract header, description, and image
+                const header = doc.querySelector('header').textContent;
+                const description = doc.querySelector('.description').textContent;
+                const imgSrc = doc.querySelector('img').src;
+
+                // Create and append a news card
+                const newsCard = `
+                    <div class="card">
+                        <img src="${imgSrc}" alt="News Image">
+                        <h3>${header}</h3>
+                        <p>${description}</p>
+                    </div>
+                `;
+                newsContainer.innerHTML += newsCard;
+
+                i++; // Move to the next news file
+            } catch (error) {
+                console.log('No more news files found or an error occurred.');
+                break;
+            }
+        }
+    }
+
+    // Fetch news on page load
+    window.onload = fetchNews;
     </script>
 </head>
 <body>
@@ -333,26 +373,13 @@
     </div>
 
     <div id="news" class="content-section">
-        <h2>Latest News</h2>
-        <div class="card-container">
-            <div class="card">
-                <img src="news1.jpg" alt="News Image 1">
-                <h3>News Title 1</h3>
-                <p>Catch the latest underground trends that are reshaping Phonk culture worldwide.</p>
-            </div>
-            <div class="card">
-                <img src="news2.jpg" alt="News Image 2">
-                <h3>News Title 2</h3>
-                <p>Phonk events you can’t miss this month—explore gatherings near you!</p>
-            </div>
-            <div class="card">
-                <img src="news3.jpg" alt="News Image 3">
-                <h3>News Title 3</h3>
-                <p>New releases from top artists—your playlist update is here.</p>
-            </div>
-        </div>
-        <button>See All</button>
+    <h2>Latest News</h2>
+    <div class="card-container" id="news-container">
+        <!-- News cards will be dynamically added here -->
     </div>
+    <button onclick="window.location.href='/news'">See All</button>
+</div>
+
 
     <div id="genres" class="content-section">
         <h2>Explore Genres</h2>
