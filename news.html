@@ -672,7 +672,7 @@ function displayNews(page = 1) {
         const isOdd = index % 2 === 0;
         const card = `
             <div class="news-card ${isOdd ? 'image-left' : 'image-right'}">
-                <img src="${news.image}" alt="${news.title}">
+                <img src="${news.image}" alt="${news.id}">
                 <div class="news-content">
                     <h3>${news.title}</h3>
                     <p>${news.description}</p>
