@@ -300,6 +300,40 @@
            
 
 
+        .hero-partners {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    font-size: 1rem;
+    color: #fff;
+    z-index: 3; /* Ensures it appears above the overlay */
+}
+
+.hero-partners .partner-icon {
+    height: 20px;
+    width: 20px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.hero-discord {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    z-index: 3; /* Ensures it appears above the overlay */
+}
+
+.hero-discord img {
+    height: 40px;
+    width: 40px;
+    transition: transform 0.3s;
+}
+
+.hero-discord img:hover {
+    transform: scale(1.1);
+}
+
+        
     </style>
     <script>
         function toggleMenu() {
@@ -386,6 +420,14 @@
         <h1>Welcome to PhonkDex</h1>
         <p>Your ultimate platform for everything phonk related. Discover news, explore genres, find artists, and check the potential of your creations!</p>
         <button onclick="scrollToNews()">Explore Now</button>
+
+        <div class="hero-partners">
+    Partners: <img src="icon1.png" alt="Icon 1" class="partner-icon"> <img src="icon2.png" alt="Icon 2" class="partner-icon">
+</div>
+<a href="https://discord.gg/yourdiscordlink" target="_blank" class="hero-discord">
+    <img src="discord-logo.png" alt="Discord Logo">
+</a>
+
     </div>
 
     <div id="news" class="content-section">
