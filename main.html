@@ -299,21 +299,33 @@
 
            
 
-
-        .hero-partners {
+.hero-partners {
     position: absolute;
     bottom: 10px;
     left: 20px;
     font-size: 1rem;
     color: #fff;
     z-index: 3; /* Ensures it appears above the overlay */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.hero-partners .partner-icon {
-    height: 20px;
-    width: 20px;
-    margin-left: 5px;
-    vertical-align: middle;
+.hero-partners a {
+    display: inline-block;
+    opacity: 0.6; /* 60% opacity */
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.hero-partners a:hover {
+    opacity: 1; /* Fully visible on hover */
+    transform: scale(1.2); /* Slight zoom effect on hover */
+}
+
+.hero-partners img {
+    height: 40px; /* Adjust size */
+    width: 40px; /* Adjust size */
+    filter: brightness(0) invert(1); /* Ensures icons are white */
 }
 
 .hero-discord {
@@ -321,16 +333,19 @@
     bottom: 10px;
     right: 20px;
     z-index: 3; /* Ensures it appears above the overlay */
+    opacity: 0.6; /* 60% opacity */
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.hero-discord:hover {
+    opacity: 1; /* Fully visible on hover */
+    transform: scale(1.2); /* Slight zoom effect on hover */
 }
 
 .hero-discord img {
-    height: 40px;
-    width: 40px;
-    transition: transform 0.3s;
-}
-
-.hero-discord img:hover {
-    transform: scale(1.1);
+    height: 50px; /* Adjust size */
+    width: 50px; /* Adjust size */
+    filter: brightness(0) invert(1); /* Ensures the icon is white */
 }
 
         
@@ -421,12 +436,17 @@
         <p>Your ultimate platform for everything phonk related. Discover news, explore genres, find artists, and check the potential of your creations!</p>
         <button onclick="scrollToNews()">Explore Now</button>
 
-        <div class="hero-partners">
-    Partners: <img src="icon1.png" alt="Icon 1" class="partner-icon"> <img src="icon2.png" alt="Icon 2" class="partner-icon">
+<div class="hero-partners">
+    Partners:
+    <a href="https://partner1.com" target="_blank">
+        <img src="https://phonkdex.de/images/void-logo.png" alt="VOID">
+    </a>
+    
 </div>
-<a href="https://discord.gg/yourdiscordlink" target="_blank" class="hero-discord">
-    <img src="discord-logo.png" alt="Discord Logo">
+<a href="https://discord.gg/xDuk6DKCSf" target="_blank" class="hero-discord">
+    <img src="https://phonkdex.de/images/discord-logo.png" alt="Discord">
 </a>
+
 
     </div>
 
