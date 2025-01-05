@@ -630,6 +630,20 @@
             nav.classList.toggle('show');
         }
 
+
+        function filterArtists() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const filteredArtists = artistData.filter(artist =>
+        artist.title.toLowerCase().includes(query) || artist.description.toLowerCase().includes(query)
+    );
+
+    // Temporarily replace artistData with filtered results for display
+    const originalArtistData = [...artistData];
+    artistData = filteredArtists;
+    displayArtists(1);
+    artistData = originalArtistData; // Restore original data after filtering
+}
+
     
        const artistsFolderUrl = 'https://phonkdex.de/artists/'; // Update with your artists folder URL
 const itemsPerPage = 10; // Number of artists per page
