@@ -636,14 +636,37 @@ const itemsPerPage = 10; // Number of artists per page
 let currentPage = 1; // Current page
 let artistData = []; // Store fetched artist data
 
-// Fetch artist profiles from the folder
+const artistsFolderUrl = 'https://phonkdex.de/artists/'; // URL to the artists folder
+const artistsListUrl = `${artistsFolderUrl}artists.json`; // URL to the JSON file
+const itemsPerPage = 10; // Number of artists per page
+let currentPage = 1; // Current page
+let artistData = []; // Store fetched artist data
+
+// Fetch the list of artist files from the JSON file
+async function fetchArtistFiles() {
+    try {
+        const response = await fetch(artistsListUrl);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching artist files:', error);
+        return [];
+    }
+}
+
+// Fetch artist profiles based on the file names
 async function fetchArtists() {
     artistData = []; // Reset artist data
-    let i = 1;
-    while (true) {
+
+    const artistFiles = await fetchArtistFiles();
+
+    for (const fileName of artistFiles) {
         try {
-            const response = await fetch(`${artistsFolderUrl}${i}.html`);
-            if (!response.ok) break;
+            const response = await fetch(`${artistsFolderUrl}${fileName}`);
+            if (!response.ok) {
+                console.error(`Error fetching ${fileName}:`, response.statusText);
+                continue;
+            }
 
             const artistHTML = await response.text();
             const parser = new DOMParser();
@@ -657,13 +680,12 @@ async function fetchArtists() {
                 : description;
             const image = doc.querySelector('.hero img').src;
 
-            artistData.push({ id: i, title, description: truncatedDescription, image });
-            i++;
+            artistData.push({ title, description: truncatedDescription, image });
         } catch (error) {
-            console.error(`Error fetching artist file ${i}.html:`, error);
-            break;
+            console.error(`Error processing ${fileName}:`, error);
         }
     }
+
     displayArtists(currentPage);
 }
 
@@ -708,6 +730,7 @@ function changePage(page) {
 
 // Initialize the page
 fetchArtists();
+
     </script>
 </head>
 <body>
@@ -732,16 +755,17 @@ fetchArtists();
     </div>
     
     <div class="content-section">
-        <div class="search-bar">
-            <input type="text" id="search" placeholder="Search artists..." oninput="filterNews()">
-        </div>
-        <div class="card-container" id="news-container">
-            <!-- News cards will be dynamically generated here -->
-        </div>
-        <div class="pagination" id="pagination">
-            <!-- Pagination buttons will be dynamically generated -->
-        </div>
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search artists..." oninput="filterArtists()">
     </div>
+    <div class="card-container" id="news-container">
+        <!-- Artist cards will be dynamically generated here -->
+    </div>
+    <div class="pagination" id="pagination">
+        <!-- Pagination buttons will be dynamically generated -->
+    </div>
+</div>
+
 
     
     <footer>
