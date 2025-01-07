@@ -645,111 +645,58 @@
     artistData = originalArtistData; // Restore original data after filtering
 }
 
-const artistsFolderUrl = 'https://phonkdex.de/artists/'; // URL to the artists folder
-const artistsListUrl = `${artistsFolderUrl}artists.json`; // URL to the JSON file
-const itemsPerPage = 10; // Number of artists per page
-let currentPage = 1; // Current page
-let artistData = []; // Store fetched artist data
+const genresFolderUrl = 'https://phonkdex.de/genre/';
+        const genresListUrl = `${genresFolderUrl}genres.json`;
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let genreData = [];
 
-// Fetch the list of artist files from the JSON file
-async function fetchArtistFiles() {
-    try {
-        const response = await fetch(artistsListUrl);
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching artist files:', error);
-        return [];
-    }
-}
-
-// Shuffle an array
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-// Fetch artist profiles based on the file names
-async function fetchArtists() {
-    artistData = []; // Reset artist data
-
-    const artistFiles = await fetchArtistFiles();
-    const shuffledFiles = shuffleArray(artistFiles); // Randomize the list of artists
-
-    for (const fileName of shuffledFiles) {
-        try {
-            const response = await fetch(`${artistsFolderUrl}${fileName}`);
-            if (!response.ok) {
-                console.error(`Error fetching ${fileName}:`, response.statusText);
-                continue;
+        // Fetch the list of genres from the JSON file
+        async function fetchGenres() {
+            try {
+                const response = await fetch(genresListUrl);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                genreData = await response.json();
+                displayGenres(currentPage);
+            } catch (error) {
+                console.error('Error fetching genres:', error);
             }
-
-            const artistHTML = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(artistHTML, 'text/html');
-
-            // Extract information from each artist file
-            const title = doc.querySelector('h1').textContent; // Artist name
-            const description = doc.querySelector('.card p').textContent;
-            const truncatedDescription = description.length > 30
-                ? `${description.substring(0, 30)}...`
-                : description;
-            const image = doc.querySelector('.hero img').src;
-
-            artistData.push({ title, description: truncatedDescription, image, link: `${artistsFolderUrl}${fileName}` });
-        } catch (error) {
-            console.error(`Error processing ${fileName}:`, error);
         }
-    }
 
-    displayArtists(currentPage);
-}
+        // Display genres with pagination
+        function displayGenres(page = 1) {
+            const genresContainer = document.getElementById('genres-container');
+            const pagination = document.getElementById('pagination');
+            genresContainer.innerHTML = '';
+            pagination.innerHTML = '';
 
-// Display artist profiles with pagination
-function displayArtists(page = 1) {
-    const artistsContainer = document.getElementById('news-container');
-    const pagination = document.getElementById('pagination');
-    artistsContainer.innerHTML = ''; // Clear previous content
-    pagination.innerHTML = ''; // Clear pagination buttons
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const visibleGenres = genreData.slice(startIndex, endIndex);
 
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const visibleArtists = artistData.slice(startIndex, endIndex);
+            visibleGenres.forEach(genre => {
+                const card = `
+                    <div class="news-card" onclick="window.location.href='${genresFolderUrl}${genre.file}'" style="cursor: pointer;">
+                        <h3>${genre.title}</h3>
+                        <p>${genre.description.substring(0, 50)}...</p>
+                    </div>
+                `;
+                genresContainer.innerHTML += card;
+            });
 
-    // Generate artist cards
-    visibleArtists.forEach(artist => {
-        const card = `
-            <div class="news-card" onclick="window.location.href='${artist.link}'" style="cursor: pointer;">
-                <img src="${artist.image}" alt="${artist.title}">
-                <div class="news-content">
-                    <h3>${artist.title}</h3>
-                    <p>${artist.description}</p>
-                </div>
-            </div>
-        `;
-        artistsContainer.innerHTML += card;
-    });
+            const totalPages = Math.ceil(genreData.length / itemsPerPage);
+            for (let i = 1; i <= totalPages; i++) {
+                const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                pagination.innerHTML += button;
+            }
+        }
 
-    // Generate pagination buttons
-    const totalPages = Math.ceil(artistData.length / itemsPerPage);
-    for (let i = 1; i <= totalPages; i++) {
-        const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-        pagination.innerHTML += button;
-    }
-}
+        function changePage(page) {
+            currentPage = page;
+            displayGenres(page);
+        }
 
-// Change to a specific page
-function changePage(page) {
-    currentPage = page;
-    displayArtists(page);
-}
-
-// Initialize the page
-fetchArtists();
-
+        window.onload = fetchGenres;
 
     </script>
 </head>
