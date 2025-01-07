@@ -722,16 +722,16 @@ const genresFolderUrl = 'https://phonkdex.de/genre/';
     </div>
     
     <div class="content-section">
-    <div class="search-bar">
-        <input type="text" id="search" placeholder="Search artists..." oninput="filterArtists()">
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search genres..." oninput="filterGenres()">
+        </div>
+        <div class="card-container" id="genres-container">
+            <!-- Genres will be dynamically loaded here -->
+        </div>
+        <div class="pagination" id="pagination">
+            <!-- Pagination buttons will be dynamically generated -->
+        </div>
     </div>
-    <div class="card-container" id="news-container">
-        <!-- Artist cards will be dynamically generated here -->
-    </div>
-    <div class="pagination" id="pagination">
-        <!-- Pagination buttons will be dynamically generated -->
-    </div>
-</div>
 
 
     
