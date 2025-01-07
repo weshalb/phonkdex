@@ -631,36 +631,59 @@
             nav.classList.toggle('show');
         }
 
-
-        function filterArtists() {
-    const query = document.getElementById('search').value.toLowerCase();
-    const filteredArtists = artistData.filter(artist =>
-        artist.title.toLowerCase().includes(query) || artist.description.toLowerCase().includes(query)
-    );
-
-    // Temporarily replace artistData with filtered results for display
-    const originalArtistData = [...artistData];
-    artistData = filteredArtists;
-    displayArtists(1);
-    artistData = originalArtistData; // Restore original data after filtering
-}
-
 const genresFolderUrl = 'https://phonkdex.de/genre/';
         const genresListUrl = `${genresFolderUrl}genres.json`;
         const itemsPerPage = 10;
         let currentPage = 1;
         let genreData = [];
+        let filteredGenres = []; // For storing filtered results during search
 
-        // Fetch the list of genres from the JSON file
-        async function fetchGenres() {
+        // Fetch the list of genre files from the JSON file
+        async function fetchGenreFiles() {
             try {
                 const response = await fetch(genresListUrl);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                genreData = await response.json();
-                displayGenres(currentPage);
+                return await response.json();
             } catch (error) {
                 console.error('Error fetching genres:', error);
+                return [];
             }
+        }
+
+        // Fetch genres content based on the file names
+        async function fetchGenres() {
+            genreData = []; // Reset genre data
+
+            const genreFiles = await fetchGenreFiles();
+
+            for (const fileName of genreFiles) {
+                try {
+                    const response = await fetch(`${genresFolderUrl}${fileName}`);
+                    if (!response.ok) {
+                        console.error(`Error fetching ${fileName}:`, response.statusText);
+                        continue;
+                    }
+
+                    const genreHTML = await response.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(genreHTML, 'text/html');
+
+                    // Extract title and description
+                    const title = doc.querySelector('h1').textContent; // Genre name
+                    const description = doc.querySelector('.content-section p').textContent;
+                    const truncatedDescription = description.length > 50
+                        ? `${description.substring(0, 50)}...`
+                        : description;
+
+                    genreData.push({ title, description: truncatedDescription, link: `${genresFolderUrl}${fileName}` });
+                } catch (error) {
+                    console.error(`Error processing ${fileName}:`, error);
+                }
+            }
+
+            // Initialize filteredGenres with full data and display the first page
+            filteredGenres = genreData;
+            displayGenres(currentPage);
         }
 
         // Display genres with pagination
@@ -672,19 +695,21 @@ const genresFolderUrl = 'https://phonkdex.de/genre/';
 
             const startIndex = (page - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
-            const visibleGenres = genreData.slice(startIndex, endIndex);
+            const visibleGenres = filteredGenres.slice(startIndex, endIndex);
 
+            // Generate genre cards
             visibleGenres.forEach(genre => {
                 const card = `
-                    <div class="news-card" onclick="window.location.href='${genresFolderUrl}${genre.file}'" style="cursor: pointer;">
+                    <div class="news-card" onclick="window.location.href='${genre.link}'" style="cursor: pointer;">
                         <h3>${genre.title}</h3>
-                        <p>${genre.description.substring(0, 50)}...</p>
+                        <p>${genre.description}</p>
                     </div>
                 `;
                 genresContainer.innerHTML += card;
             });
 
-            const totalPages = Math.ceil(genreData.length / itemsPerPage);
+            // Generate pagination buttons
+            const totalPages = Math.ceil(filteredGenres.length / itemsPerPage);
             for (let i = 1; i <= totalPages; i++) {
                 const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
                 pagination.innerHTML += button;
@@ -696,8 +721,18 @@ const genresFolderUrl = 'https://phonkdex.de/genre/';
             displayGenres(page);
         }
 
-        window.onload = fetchGenres;
+        // Search functionality
+        function filterGenres() {
+            const query = document.getElementById('search').value.toLowerCase();
+            filteredGenres = genreData.filter(genre =>
+                genre.title.toLowerCase().includes(query) ||
+                genre.description.toLowerCase().includes(query)
+            );
+            currentPage = 1; // Reset to the first page
+            displayGenres(currentPage);
+        }
 
+        window.onload = fetchGenres;
     </script>
 </head>
 <body>
