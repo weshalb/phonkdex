@@ -1,0 +1,795 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="https://phonkdex.de/images/favicon.ico" type="image/x-icon"/>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artists</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d, #262626);
+            color: #fff;
+            overflow-x: hidden;
+            animation: gradientMove 10s infinite alternate;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: #444;
+            color: #ddd;
+        }
+.hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(135deg, #000000, #222222, #555555, #111111); animation: pulseBg 8s infinite; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8); } .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0.1)); pointer-events: none; z-index: 1; } .hero h1, .hero p, .hero button { position: relative; z-index: 2; /* Place the text above the overlay */ }
+
+        @keyframes pulseBg {
+            0%, 100% { background-size: 150%; }
+            50% { background-size: 200%; }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            animation: zoomIn 1s ease-out;
+        }
+
+        @keyframes zoomIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+.hero button {
+    margin-top: 30px;
+    padding: 12px 25px;
+    background: rgba(50, 50, 50, 0.9);
+    border: 1px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0; /* Start hidden */
+    transform: translateY(20px); /* Start slightly lower */
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Ensure smooth hover scaling */
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 1.5s; /* Adjust timing if needed */
+    animation-fill-mode: forwards; /* Ensure the final state of the animation persists */
+}
+
+.hero button:hover {
+    background: rgba(80, 80, 80, 0.9); /* Darken background on hover */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Move to its final position */
+    }
+}
+
+
+
+
+        
+
+        .content-section button {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .content-section button:hover {
+            background: rgba(80, 80, 80, 0.9);
+            transform: scale(1.1);
+        }
+
+        .content-section {
+            padding: 60px 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 15px;
+            margin: 30px auto;
+            max-width: 1200px;
+            animation: fadeIn 2s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .content-section:nth-child(even) {
+            background: linear-gradient(135deg, #1a1a1a, #333333);
+        }
+
+        .content-section h2 {
+            margin-bottom: 30px;
+            font-size: 2.8rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+.question {
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            text-align: left;
+        }
+
+        .question h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .answers button {
+            padding: 12px 25px;
+            margin: 5px;
+            background: rgba(50, 50, 50, 0.9);
+            border: 1px solid #fff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .answers button.clicked-yes {
+            background: green;
+            color: #fff;
+        }
+
+        .answers button.clicked-maybe {
+            background: orange;
+            color: #000;
+        }
+
+        .answers button.clicked-no {
+            background: red;
+            color: #fff;
+        }
+
+        .answers button:hover {
+            transform: scale(1.1);
+        }
+
+        .result {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .result h2 {
+            margin-bottom: 15px;
+        }
+
+        .result p {
+            font-size: 1.1rem;
+            color: #ddd;
+        }
+
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            width: 280px;
+            text-align: left;
+            transition: transform 0.3s ease, background-color 0.3s;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        footer {
+            padding: 30px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        footer p {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+
+
+
+
+
+        /* this is the section for searchbar etc */
+
+       .search-bar {
+    margin: 10px auto 30px; /* Top: 10px, Bottom: 30px */
+    max-width: 600px;
+    text-align: center;
+} 
+
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+}
+
+/* News Card Styling */
+.news-card {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, background-color 0.3s;
+}
+
+.news-card img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.news-card .news-content {
+    padding: 20px;
+    text-align: left;
+}
+
+.news-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.news-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #ddd;
+}
+
+.news-card:hover {
+    transform: scale(1.03);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Alternating Layout */
+.image-left {
+    flex-direction: row;
+}
+
+.image-right {
+    flex-direction: row-reverse;
+}
+
+/* Pagination Styling */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.pagination-button.active {
+    background: #444;
+    color: #ddd;
+}
+
+.pagination-button:hover {
+    transform: scale(1.1);
+    background: rgba(80, 80, 80, 0.9);
+}
+
+/* Container for consistent card layout */
+.card-container {
+    display: flex;
+    flex-direction: column; /* Ensure cards are stacked */
+    align-items: center;    /* Center the cards */
+    gap: 20px;              /* Space between cards */
+}
+
+/* News Card Styling */
+.news-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;               /* Make cards responsive */
+    max-width: 800px;         /* Set a maximum width for consistency */
+    margin: 5px 0;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, background-color 0.3s;
+}
+
+/* Ensure images fit consistently */
+.news-card img {
+    width: 200px;       /* Fixed width for all images */
+    height: auto;       /* Maintain aspect ratio */
+    border-radius: 10px;
+}
+
+/* Content inside the card */
+.news-card .news-content {
+    flex: 1;               /* Allow text to grow */
+    padding: 20px;
+    text-align: left;
+}
+
+/* Headlines */
+.news-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+/* Description */
+.news-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #ddd;
+}
+
+/* Alternating Layout */
+.image-left {
+    flex-direction: row;
+}
+
+.image-right {
+    flex-direction: row-reverse;
+}
+
+/* Hover effect */
+.news-card:hover {
+    transform: scale(1.03);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+
+
+
+
+                @media screen and (max-width: 768px) {
+    nav {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 60px; /* Adjusted for smaller header height */
+        right: 0;
+        width: 100%;
+        padding: 15px; /* Reduced padding for a compact look */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .menu-icon {
+        display: block;
+        font-size: 1.5rem; /* Smaller menu icon */
+        cursor: pointer;
+    }
+
+    nav a {
+        display: block;
+        margin: 8px 0; /* Reduced spacing between links */
+        text-align: center;
+        font-size: 0.9rem; /* Smaller text size */
+        padding: 6px 10px; /* Smaller padding */
+    }
+
+    nav.show {
+        display: flex;
+    }
+
+    body {
+        font-size: 90%; /* Reduce the base font size */
+    }
+
+    .hero h1 {
+        font-size: 2.8rem; /* Adjust the hero section heading */
+    }
+
+    .hero p {
+        font-size: 1rem; /* Adjust the hero section paragraph */
+    }
+
+    .content-section h2 {
+        font-size: 1.8rem; /* Adjust section titles */
+    }
+
+    .content-section p, .card p {
+        font-size: 0.85rem; /* Adjust general text and card text */
+    }
+
+    footer p {
+        font-size: 0.7rem; /* Adjust footer text */
+    }
+
+            .news-card {
+    flex-direction: column; /* Stack the image and text */
+    align-items: center;    /* Center the content */
+    text-align: center;     /* Center-align the text */
+    padding: 15px;          /* Adjust padding for smaller screens */
+                 margin: 5px 0; /* Reduce vertical spacing between news cards */
+}
+
+.news-card img {
+    width: 100%;
+    max-width: 300px; /* Scale down the image */
+    height: auto;     /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Add space between image and text */
+}
+
+.news-card .news-content {
+    padding: 10px; /* Reduce padding on mobile */
+}
+
+.news-card h3 {
+    font-size: 1.5rem; /* Adjust headline size */
+}
+
+.news-card p {
+    font-size: 0.9rem; /* Reduce paragraph size */
+    line-height: 1.4;  /* Adjust line height */
+}
+
+            .pagination {
+    gap: 5px; /* Reduce spacing between buttons */
+    padding: 10px 0;
+}
+
+.pagination-button {
+    padding: 8px 12px; /* Slightly smaller buttons */
+    font-size: 0.9rem; /* Adjust text size */
+}
+
+            .news-card {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;    /* Center-align all elements */
+    text-align: center;     /* Center-align the text */
+    padding: 15px;          /* Add padding for spacing */
+}
+
+.news-card img {
+    width: 100%;            /* Ensure the image spans the container */
+    max-width: 300px;       /* Limit the image width */
+    height: auto;           /* Maintain aspect ratio */
+    margin-bottom: 10px;    /* Add spacing between the image and the title */
+}
+
+.news-card .news-content {
+    padding: 0;             /* Remove extra padding */
+}
+
+.news-card h3 {
+    margin-bottom: 10px;    /* Add spacing below the title */
+    font-size: 1.5rem;      /* Adjust font size for mobile */
+}
+
+.news-card p {
+    font-size: 0.9rem;      /* Adjust description size */
+    line-height: 1.4;       /* Improve readability */
+}
+
+                    .search-bar {
+    margin: 30px auto;
+    max-width: 600px;
+    text-align: center;
+}
+            
+}
+
+
+        @media screen and (min-width: 769px) {
+    .menu-icon {
+        display: none !important; /* Ensure it overrides other rules */
+    }
+
+    nav {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        box-shadow: none;
+    }
+
+            html, body {
+    height: 100%;
+    overflow-y: auto; /* Ensure vertical scrolling works */
+}
+
+            html {
+    overflow-x: hidden; /* Ensure no horizontal scrolling at the root level */
+}
+
+        }
+    </style>
+
+
+
+
+
+    <script>
+
+        function scrollToSearch() {
+    const firstQuestion = document.getElementById("search");
+    firstQuestion.scrollIntoView({ behavior: "smooth" });
+}
+        
+        function toggleMenu() {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('show');
+        }
+
+
+        function filterArtists() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const filteredArtists = artistData.filter(artist =>
+        artist.title.toLowerCase().includes(query) || artist.description.toLowerCase().includes(query)
+    );
+
+    // Temporarily replace artistData with filtered results for display
+    const originalArtistData = [...artistData];
+    artistData = filteredArtists;
+    displayArtists(1);
+    artistData = originalArtistData; // Restore original data after filtering
+}
+
+const artistsFolderUrl = 'https://phonkdex.de/artists/'; // URL to the artists folder
+const artistsListUrl = `${artistsFolderUrl}artists.json`; // URL to the JSON file
+const itemsPerPage = 10; // Number of artists per page
+let currentPage = 1; // Current page
+let artistData = []; // Store fetched artist data
+
+// Fetch the list of artist files from the JSON file
+async function fetchArtistFiles() {
+    try {
+        const response = await fetch(artistsListUrl);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching artist files:', error);
+        return [];
+    }
+}
+
+// Shuffle an array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Fetch artist profiles based on the file names
+async function fetchArtists() {
+    artistData = []; // Reset artist data
+
+    const artistFiles = await fetchArtistFiles();
+    const shuffledFiles = shuffleArray(artistFiles); // Randomize the list of artists
+
+    for (const fileName of shuffledFiles) {
+        try {
+            const response = await fetch(`${artistsFolderUrl}${fileName}`);
+            if (!response.ok) {
+                console.error(`Error fetching ${fileName}:`, response.statusText);
+                continue;
+            }
+
+            const artistHTML = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(artistHTML, 'text/html');
+
+            // Extract information from each artist file
+            const title = doc.querySelector('h1').textContent; // Artist name
+            const description = doc.querySelector('.card p').textContent;
+            const truncatedDescription = description.length > 30
+                ? `${description.substring(0, 30)}...`
+                : description;
+            const image = doc.querySelector('.hero img').src;
+
+            artistData.push({ title, description: truncatedDescription, image, link: `${artistsFolderUrl}${fileName}` });
+        } catch (error) {
+            console.error(`Error processing ${fileName}:`, error);
+        }
+    }
+
+    displayArtists(currentPage);
+}
+
+// Display artist profiles with pagination
+function displayArtists(page = 1) {
+    const artistsContainer = document.getElementById('news-container');
+    const pagination = document.getElementById('pagination');
+    artistsContainer.innerHTML = ''; // Clear previous content
+    pagination.innerHTML = ''; // Clear pagination buttons
+
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const visibleArtists = artistData.slice(startIndex, endIndex);
+
+    // Generate artist cards
+    visibleArtists.forEach(artist => {
+        const card = `
+            <div class="news-card" onclick="window.location.href='${artist.link}'" style="cursor: pointer;">
+                <img src="${artist.image}" alt="${artist.title}">
+                <div class="news-content">
+                    <h3>${artist.title}</h3>
+                    <p>${artist.description}</p>
+                </div>
+            </div>
+        `;
+        artistsContainer.innerHTML += card;
+    });
+
+    // Generate pagination buttons
+    const totalPages = Math.ceil(artistData.length / itemsPerPage);
+    for (let i = 1; i <= totalPages; i++) {
+        const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+        pagination.innerHTML += button;
+    }
+}
+
+// Change to a specific page
+function changePage(page) {
+    currentPage = page;
+    displayArtists(page);
+}
+
+// Initialize the page
+fetchArtists();
+
+
+    </script>
+</head>
+<body>
+    <header>
+        <a href="https://phonkdex.de" style="text-decoration: none;">
+    <div class="logo">PhonkDex</div>
+</a>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <nav>
+            <a href="https://phonkdex.de/news">NEWS</a>
+            <a href="https://phonkdex.de/artists">ARTISTS</a>
+            
+            <a href="https://phonkdex.de/labels">LABELS</a>
+            <a href="https://phonkdex.de/check">POTENTIAL CHECK</a>
+        </nav>
+    </header>
+
+     <div class="hero">
+        <h1>Genres</h1>
+        <p>Explore all the subgenres of Phonk! OG / Memphis Phonk, Drift Phonk? We have it all!</p>
+        <button onclick="scrollToSearch()">Read Now</button>
+    </div>
+    
+    <div class="content-section">
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search artists..." oninput="filterArtists()">
+    </div>
+    <div class="card-container" id="news-container">
+        <!-- Artist cards will be dynamically generated here -->
+    </div>
+    <div class="pagination" id="pagination">
+        <!-- Pagination buttons will be dynamically generated -->
+    </div>
+</div>
+
+
+    
+    <footer>
+        <p>&copy; 2024 PhonkDex. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
