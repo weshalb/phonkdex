@@ -113,15 +113,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderVideo(start, end) {
     const fps = 30;
     const frames = (end - start) * fps;
+    const audioSegment = audioBuffer.getChannelData(0).slice(
+      Math.floor(start * audioBuffer.sampleRate),
+      Math.floor(end * audioBuffer.sampleRate)
+    );
+    const kickTimes = detectKicks(audioSegment, fps, start);
 
     for (let i = 0; i < frames; i++) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw background
+      // Draw blurred background
       ctx.filter = "blur(15px)";
       ctx.drawImage(coverImage, 0, 0, canvas.width, canvas.height);
 
-      // Draw main cover
+      // Draw main cover image
       const mainSize = canvas.width * 0.8;
       ctx.filter = "none";
       ctx.drawImage(
@@ -132,9 +137,56 @@ document.addEventListener("DOMContentLoaded", () => {
         mainSize
       );
 
-      // TODO: Add visualizer and kick effects here
+      // Add visualizer bars
+      const visualizerWidth = canvas.width;
+      const visualizerHeight = 80;
+      ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+      const numBars = 50;
+      const barWidth = visualizerWidth / numBars;
+      for (let j = 0; j < numBars; j++) {
+        const barHeight = Math.abs(audioSegment[i * fps + j]) * visualizerHeight;
+        ctx.fillRect(
+          j * barWidth,
+          canvas.height - visualizerHeight - barHeight,
+          barWidth - 2,
+          barHeight
+        );
+      }
+
+      // Add flash and shake effects for kicks
+      const currentTime = start + i / fps;
+      if (kickTimes.some((kick) => Math.abs(kick - currentTime) < 0.05)) {
+        // Flash effect
+        ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Shake effect
+        const shakeX = Math.random() * 10 - 5;
+        const shakeY = Math.random() * 10 - 5;
+        ctx.translate(shakeX, shakeY);
+      }
+
+      // Reset transform
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     console.log("Video rendering complete!");
+  }
+
+  // Detect Kicks
+  function detectKicks(segment, fps, startTime) {
+    const kickThreshold = 0.6; // Adjust this for sensitivity
+    const kickTimes = [];
+
+    for (let i = 0; i < segment.length; i += fps) {
+      const amplitude = Math.abs(segment[i]);
+      if (amplitude > kickThreshold) {
+        const time = startTime + i / audioBuffer.sampleRate;
+        kickTimes.push(time);
+      }
+    }
+
+    console.log("Detected kick times:", kickTimes);
+    return kickTimes;
   }
 });
