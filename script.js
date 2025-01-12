@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Detect kicks (simplified amplitude threshold)
   function detectKicks(audioBuffer) {
     const channelData = audioBuffer.getChannelData(0);
-    const threshold = 0.4; // Adjust sensitivity
+    const threshold = 0.2; // Adjust sensitivity
     const kicks = [];
     for (let i = 0; i < channelData.length; i += 1024) {
       if (Math.abs(channelData[i]) > threshold) {
