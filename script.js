@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const kickTimeline = document.getElementById("kick-timeline");
 
   let coverImage = null;
-  let audioFile = null; // This stores the actual audio file
+  let audioFile = null;
   let detectedKicks = [];
-  let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  let audioContext = null; // Initialize as null, and create after user interaction
 
   // Step 1: Upload Cover Image
   coverInput.addEventListener("change", (e) => {
@@ -35,17 +35,52 @@ document.addEventListener("DOMContentLoaded", () => {
   audioInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (file) {
-      audioFile = file; // Properly set the audio file
+      audioFile = file; // Assign audio file
+      console.log("Audio file uploaded:", audioFile);
+
+      // Create and resume AudioContext after user interaction
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        console.log("AudioContext created.");
+      }
+
       const reader = new FileReader();
       reader.onload = () => {
         audioContext.decodeAudioData(reader.result, (audioBuffer) => {
           detectedKicks = detectKicks(audioBuffer);
           visualizeKicks(detectedKicks, audioBuffer.duration);
-          console.log("Kick detection complete.");
+          console.log("Kick detection complete. Detected kicks:", detectedKicks);
         });
       };
       reader.readAsArrayBuffer(file);
     }
+  });
+
+  // Step 3: Generate Video
+  generateButton.addEventListener("click", async () => {
+    console.log("User interaction detected. Resuming AudioContext...");
+    if (audioContext && audioContext.state === "suspended") {
+      await audioContext.resume(); // Resume the audio context
+      console.log("AudioContext resumed.");
+    }
+
+    if (!coverImage) {
+      alert("Please upload a cover image.");
+      return;
+    }
+
+    if (!audioFile) {
+      alert("Please upload an audio file.");
+      return;
+    }
+
+    if (detectedKicks.length === 0) {
+      alert("No kicks detected in the audio file. Try uploading a different file.");
+      return;
+    }
+
+    console.log("All prerequisites met. Starting video generation...");
+    renderVideo();
   });
 
   // Detect kicks (simplified amplitude threshold)
@@ -72,16 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
       kickTimeline.appendChild(mark);
     });
   }
-
-  // Step 3: Generate Video
-  generateButton.addEventListener("click", () => {
-    if (coverImage && audioFile && detectedKicks.length > 0) {
-      console.log("Generating video...");
-      renderVideo();
-    } else {
-      alert("Please complete steps 1 and 2 before generating a video.");
-    }
-  });
 
   // Render the video with effects
   function renderVideo() {
