@@ -17,21 +17,34 @@
       margin: 0;
     }
     #upload-section {
-      margin-top: 20px;
+      margin: 20px 0;
       text-align: center;
     }
     .preview {
+      position: relative;
       width: 400px;
       height: 400px;
       background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      overflow: hidden;
     }
     canvas {
       width: 100%;
       height: 100%;
+    }
+    #progress-bar-container {
+      width: 400px;
+      background: #444;
+      margin-top: 10px;
+      height: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+    }
+    #progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #ff5722;
+      transition: width 0.5s;
     }
     button {
       margin-top: 10px;
@@ -48,10 +61,13 @@
   <div id="upload-section">
     <input type="file" id="image-upload" accept="image/*" />
     <input type="file" id="audio-upload" accept="audio/*" />
-    <button id="generate">Generate Edit</button>
+    <button id="generate">Generate Video</button>
   </div>
   <div class="preview" id="preview-container">
     <canvas id="visualizer"></canvas>
+  </div>
+  <div id="progress-bar-container">
+    <div id="progress-bar"></div>
   </div>
   <script src="script.js"></script>
 </body>
