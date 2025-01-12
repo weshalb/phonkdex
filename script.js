@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const kickTimeline = document.getElementById("kick-timeline");
 
   let coverImage = null;
-  let audioFile = null;
+  let audioFile = null; // This stores the actual audio file
   let detectedKicks = [];
   let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   audioInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (file) {
+      audioFile = file; // Properly set the audio file
       const reader = new FileReader();
       reader.onload = () => {
         audioContext.decodeAudioData(reader.result, (audioBuffer) => {
