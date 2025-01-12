@@ -1,0 +1,13 @@
+{
+  "genres": {
+    "Phonk": ["Memphis", "Drift Phonk", "Vaporwave"],
+    "Memphis": ["Drift Phonk", "Trap"],
+    "Vaporwave": ["Synthwave", "Lo-fi"],
+    "Drift Phonk": ["Trap", "Future Garage"]
+  },
+  "artists": {
+    "Memphis": ["DJ Screw", "Three 6 Mafia"],
+    "Vaporwave": ["Macintosh Plus", "Blank Banshee"],
+    "Drift Phonk": ["Kaito Shoma", "PlayaPhonk"]
+  }
+}
