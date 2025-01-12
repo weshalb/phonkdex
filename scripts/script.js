@@ -1,5 +1,5 @@
 // Fetch data dynamically (example API route)
-fetch('/api/data')
+fetch('/api/data.json')
   .then(response => response.json())
   .then(data => createMap(data));
 
