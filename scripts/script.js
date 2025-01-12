@@ -1,24 +1,21 @@
-// Fetch data dynamically (example API route)
-fetch('/api/data.json')
-  .then(response => response.json())
-  .then(data => createMap(data));
+// Load the data from the JSON file
+d3.json('/api/data.json').then(data => createMap(data));
 
-// Function to create the map
 function createMap(data) {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  const svg = d3.select("#map")
+  const svg = d3.select("body")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
 
   const simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(d => d.id).distance(100))
+    .force("link", d3.forceLink().id(d => d.id).distance(120))
     .force("charge", d3.forceManyBody().strength(-300))
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-  // Convert JSON data into nodes and links
+  // Prepare nodes and links from the data
   const nodes = Object.keys(data.genres).map(genre => ({ id: genre }));
   const links = [];
 
@@ -28,25 +25,33 @@ function createMap(data) {
     });
   });
 
-  // Draw links (connections)
+  // Add nodes for artists
+  Object.entries(data.artists).forEach(([genre, artists]) => {
+    artists.forEach(artist => {
+      nodes.push({ id: artist, group: genre });
+      links.push({ source: genre, target: artist });
+    });
+  });
+
+  // Draw links (lines)
   const link = svg.append("g")
     .selectAll("line")
     .data(links)
     .enter()
     .append("line");
 
-  // Draw nodes (genres)
+  // Draw nodes (genre and artist names)
   const node = svg.append("g")
     .selectAll("text")
     .data(nodes)
     .enter()
     .append("text")
     .text(d => d.id)
-    .attr("font-size", "16px")
+    .attr("font-size", "14px")
     .attr("text-anchor", "middle")
     .call(drag(simulation));
 
-  // Add forces
+  // Add forces to nodes and links
   simulation
     .nodes(nodes)
     .on("tick", () => {
