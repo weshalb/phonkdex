@@ -1,132 +1,121 @@
-const imageInput = document.getElementById("image-upload");
+const coverInput = document.getElementById("cover-upload");
 const audioInput = document.getElementById("audio-upload");
-const generateBtn = document.getElementById("generate");
-const canvas = document.getElementById("visualizer");
+const generateButton = document.getElementById("generate-video");
+const canvas = document.getElementById("preview-canvas");
 const ctx = canvas.getContext("2d");
-const progressBarContainer = document.getElementById("progress-bar-container");
-const progressBar = document.getElementById("progress-bar");
+
+const kickProgress = document.getElementById("kick-progress-bar");
+const videoProgress = document.getElementById("video-progress-bar");
+const kickTimeline = document.getElementById("kick-timeline");
 
 let coverImage = null;
 let audioFile = null;
+let detectedKicks = [];
 
-// Handle image upload
-imageInput.addEventListener("change", (e) => {
+// Step 1: Upload Cover Image
+coverInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (file) {
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = () => {
       const img = new Image();
-      img.src = event.target.result;
+      img.src = reader.result;
       img.onload = () => {
         coverImage = img;
+        console.log("Cover image loaded.");
       };
     };
     reader.readAsDataURL(file);
   }
 });
 
-// Handle audio upload
+// Step 2: Upload Audio File and Detect Kicks
 audioInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (file) {
-    audioFile = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const audioContext = new AudioContext();
+      audioContext.decodeAudioData(reader.result, (audioBuffer) => {
+        detectedKicks = detectKicks(audioBuffer);
+        visualizeKicks(detectedKicks, audioBuffer.duration);
+        console.log("Kick detection complete.");
+      });
+    };
+    reader.readAsArrayBuffer(file);
   }
 });
 
-// Generate button functionality
-generateBtn.addEventListener("click", () => {
-  if (coverImage && audioFile) {
-    progressBarContainer.style.display = "block";
-    processAudioAndGenerateVideo(audioFile, coverImage);
-  } else {
-    alert("Please upload both an image and an audio file!");
-  }
-});
-
-// Process audio and generate video
-async function processAudioAndGenerateVideo(audioFile, coverImage) {
-  const audioContext = new AudioContext();
-  const reader = new FileReader();
-
-  reader.onload = async (event) => {
-    const audioBuffer = await audioContext.decodeAudioData(event.target.result);
-
-    // Detect beats (simplified kick detection)
-    const beats = detectBeats(audioBuffer);
-
-    // Render video with effects
-    renderVideo(beats, coverImage);
-  };
-
-  reader.readAsArrayBuffer(audioFile);
-}
-
-// Simple beat detection based on amplitude
-function detectBeats(audioBuffer) {
+// Detect kicks (simplified amplitude threshold)
+function detectKicks(audioBuffer) {
   const channelData = audioBuffer.getChannelData(0);
-  const threshold = 0.5; // Adjust for sensitivity
-  const beats = [];
-
+  const threshold = 0.4; // Adjust sensitivity
+  const kicks = [];
   for (let i = 0; i < channelData.length; i += 1024) {
     if (Math.abs(channelData[i]) > threshold) {
-      beats.push(i / audioBuffer.sampleRate); // Convert index to time
+      kicks.push(i / audioBuffer.sampleRate); // Convert index to time
     }
   }
-  return beats;
+  return kicks;
 }
 
-// Render video with effects
-async function renderVideo(beats, coverImage) {
-  const duration = 10; // Adjust video length as needed
+// Visualize kicks on timeline
+function visualizeKicks(kicks, duration) {
+  kickTimeline.innerHTML = ""; // Clear previous marks
+  kicks.forEach((kickTime) => {
+    const position = (kickTime / duration) * 100;
+    const mark = document.createElement("div");
+    mark.className = "kick-mark";
+    mark.style.left = `${position}%`;
+    kickTimeline.appendChild(mark);
+  });
+}
+
+// Step 3: Generate Video
+generateButton.addEventListener("click", () => {
+  if (coverImage && audioFile && detectedKicks.length > 0) {
+    console.log("Generating video...");
+    renderVideo();
+  } else {
+    alert("Please complete steps 1 and 2 before generating a video.");
+  }
+});
+
+// Render the video with effects
+function renderVideo() {
   const fps = 30;
+  const duration = 10; // Example video duration
   const frames = duration * fps;
-  const videoFrames = [];
 
   for (let frame = 0; frame < frames; frame++) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw blurred background
-    ctx.filter = "blur(10px)";
+    // Background (Blurred)
+    ctx.filter = "blur(15px)";
     ctx.drawImage(coverImage, 0, 0, canvas.width, canvas.height);
 
-    // Draw cover image
-    const coverSize = canvas.width * 0.8;
+    // Main Video (Centered)
+    const mainSize = canvas.width * 0.8;
     ctx.filter = "none";
     ctx.drawImage(
       coverImage,
-      (canvas.width - coverSize) / 2,
-      (canvas.height - coverSize) / 2,
-      coverSize,
-      coverSize
+      (canvas.width - mainSize) / 2,
+      (canvas.height - mainSize) / 2,
+      mainSize,
+      mainSize
     );
 
-    // Visualizer
-    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-    const barWidth = canvas.width / 64;
-    for (let i = 0; i < 64; i++) {
-      const barHeight = Math.random() * 100; // Mock visualizer
-      ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
-    }
-
-    // Flash/Zoom on beats
+    // Add effects for detected kicks
     const time = frame / fps;
-    if (beats.some((beat) => Math.abs(beat - time) < 0.1)) {
-      ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+    if (detectedKicks.some((kick) => Math.abs(kick - time) < 0.05)) {
+      ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.scale(1.1, 1.1);
+      ctx.translate(Math.random() * 10 - 5, Math.random() * 10 - 5); // Shake
     }
 
-    // Capture frame
-    videoFrames.push(canvas.toDataURL());
-    progressBar.style.width = `${(frame / frames) * 100}%`;
+    // Progress bar
+    videoProgress.style.width = `${(frame / frames) * 100}%`;
   }
 
-  // Combine frames into a video
-  await generateVideo(videoFrames, fps);
-}
-
-// Generate video using FFmpeg (or client-side alternatives)
-async function generateVideo(frames, fps) {
-  console.log("Frames captured, ready to render video!");
-  progressBarContainer.style.display = "none";
+  console.log("Video rendering complete.");
 }
