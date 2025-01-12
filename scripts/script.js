@@ -1,5 +1,5 @@
 // Load the data from the JSON file
-d3.json('/api/data.json').then(data => createMap(data));
+d3.json('data.json').then(data => createMap(data));
 
 function createMap(data) {
   const width = window.innerWidth;
