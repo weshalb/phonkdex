@@ -110,55 +110,75 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Render the video with effects
   function renderVideo() {
-    const fps = 30;
-    const duration = 10; // Example video duration
-    const frames = duration * fps;
-    const videoFrames = [];
+  const fps = 30; // Frames per second
+  const duration = 10; // Example video duration in seconds
+  const frames = duration * fps; // Total number of frames
+  const videoFrames = []; // Array to store frames for the video
 
-    for (let frame = 0; frame < frames; frame++) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  console.log("Starting video rendering...");
 
-      // Draw background (blurred cover)
-      if (coverImage) {
-        ctx.filter = "blur(15px)";
-        ctx.drawImage(coverImage, 0, 0, canvas.width, canvas.height);
-      }
+  // Generate frames
+  for (let frame = 0; frame < frames; frame++) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw cover image (main content)
-      const mainSize = canvas.width * 0.8;
-      ctx.filter = "none";
-      ctx.drawImage(
-        coverImage,
-        (canvas.width - mainSize) / 2,
-        (canvas.height - mainSize) / 2,
-        mainSize,
-        mainSize
-      );
-
-      // Add audio visualizer
-      const visualizerWidth = canvas.width;
-      const visualizerHeight = 50;
-      ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-      const numBars = 30;
-      const barWidth = visualizerWidth / numBars;
-      for (let i = 0; i < numBars; i++) {
-        const barHeight = Math.random() * visualizerHeight;
-        ctx.fillRect(i * barWidth, canvas.height - visualizerHeight - barHeight, barWidth, barHeight);
-      }
-
-      // Flash and Shake effects on detected kicks
-      const time = frame / fps;
-      if (detectedKicks.some((kick) => Math.abs(kick - time) < 0.05)) {
-        ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height); // Flash effect
-        ctx.translate(Math.random() * 10 - 5, Math.random() * 10 - 5); // Shake effect
-      }
-
-      // Capture frame for video (add more effects here if needed)
-      videoFrames.push(canvas.toDataURL());
-      videoProgress.style.width = `${(frame / frames) * 100}%`;
+    // Draw background (blurred cover)
+    if (coverImage) {
+      ctx.filter = "blur(15px)";
+      ctx.drawImage(coverImage, 0, 0, canvas.width, canvas.height);
     }
 
-    console.log("Video rendering complete.");
+    // Draw cover image (main content)
+    const mainSize = canvas.width * 0.8;
+    ctx.filter = "none";
+    ctx.drawImage(
+      coverImage,
+      (canvas.width - mainSize) / 2,
+      (canvas.height - mainSize) / 2,
+      mainSize,
+      mainSize
+    );
+
+    // Add audio visualizer
+    const visualizerWidth = canvas.width;
+    const visualizerHeight = 50;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    const numBars = 30;
+    const barWidth = visualizerWidth / numBars;
+    for (let i = 0; i < numBars; i++) {
+      const barHeight = Math.random() * visualizerHeight;
+      ctx.fillRect(i * barWidth, canvas.height - visualizerHeight - barHeight, barWidth, barHeight);
+    }
+
+    // Flash and Shake effects on detected kicks
+    const time = frame / fps;
+    if (detectedKicks.some((kick) => Math.abs(kick - time) < 0.05)) {
+      ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height); // Flash effect
+      ctx.translate(Math.random() * 10 - 5, Math.random() * 10 - 5); // Shake effect
+    }
+
+    // Add current frame to the video frames array
+    videoFrames.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    videoProgress.style.width = `${(frame / frames) * 100}%`;
   }
-});
+
+  // Create video using Whammy.js
+  console.log("Generating video...");
+  const video = new Whammy.Video(fps);
+
+  videoFrames.forEach((frame) => {
+    video.add(frame); // Add each frame to the video
+  });
+
+  const output = video.compile(); // Compile the frames into a WebM video
+
+  // Create a downloadable video link
+  const videoURL = URL.createObjectURL(output);
+  const downloadLink = document.createElement("a");
+  downloadLink.href = videoURL;
+  downloadLink.download = "visualizer_video.webm";
+  downloadLink.textContent = "Download Video";
+  document.body.appendChild(downloadLink);
+
+  console.log("Video rendering complete. Video ready for download.");
+}
