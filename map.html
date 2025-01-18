@@ -44,6 +44,9 @@
                 { source: "Phonk", target: "DJ Smokey" },
                 { source: "Phonk", target: "MC Holocaust" },
                 { source: "Phonk", target: "Soulzay" },
+                { source: "Phonk", target: "Shoegaze" },
+                { source: "Phonk", target: "Memphis Rap" },
+                { source: "Phonk", target: "Lo-Fi" },
                 { source: "Shoegaze", target: "My Bloody Valentine" },
                 { source: "Shoegaze", target: "Slowdive" },
                 { source: "Shoegaze", target: "Cocteau Twins" },
@@ -63,12 +66,22 @@
             .attr("width", width)
             .attr("height", height);
 
+        const container = svg.append("g");
+
+        const zoom = d3.zoom()
+            .scaleExtent([0.5, 2])
+            .on("zoom", (event) => {
+                container.attr("transform", event.transform);
+            });
+
+        svg.call(zoom);
+
         const simulation = d3.forceSimulation(data.nodes)
-            .force("link", d3.forceLink(data.links).id(d => d.id).distance(100))
-            .force("charge", d3.forceManyBody().strength(-300))
+            .force("link", d3.forceLink(data.links).id(d => d.id).distance(150))
+            .force("charge", d3.forceManyBody().strength(-500))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
-        const link = svg.append("g")
+        const link = container.append("g")
             .attr("class", "links")
             .selectAll("line")
             .data(data.links)
@@ -77,7 +90,7 @@
             .attr("stroke-opacity", 0.6)
             .attr("stroke-width", 1.5);
 
-        const node = svg.append("g")
+        const node = container.append("g")
             .attr("class", "nodes")
             .selectAll("circle")
             .data(data.nodes)
@@ -89,7 +102,7 @@
                 .on("drag", dragged)
                 .on("end", dragended));
 
-        const label = svg.append("g")
+        const label = container.append("g")
             .attr("class", "labels")
             .selectAll("text")
             .data(data.nodes)
