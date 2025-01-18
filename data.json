@@ -1,9 +1,0 @@
-{
-  "nodes": [
-    { "id": "Trap", "group": 1 },
-    { "id": "HipHop", "group": 2 }
-  ],
-  "links": [
-    { "source": "Trap", "target": "HipHop", "value": 1 }
-  ]
-}
