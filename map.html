@@ -68,6 +68,17 @@
 
         const container = svg.append("g");
 
+        // Add background stars
+        const starCount = 200;
+        for (let i = 0; i < starCount; i++) {
+            svg.append("circle")
+                .attr("cx", Math.random() * width)
+                .attr("cy", Math.random() * height)
+                .attr("r", Math.random() * 2)
+                .attr("fill", "#fff")
+                .attr("opacity", 0.5);
+        }
+
         const zoom = d3.zoom()
             .scaleExtent([0.5, 2])
             .on("zoom", (event) => {
@@ -96,7 +107,7 @@
             .data(data.nodes)
             .enter().append("circle")
             .attr("r", 8)
-            .attr("fill", d => d.group === 1 ? "#ff6f61" : "#4f81bd")
+            .attr("fill", d => d.group === 1 ? "#fff" : "#000")
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
