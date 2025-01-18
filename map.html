@@ -1,26 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Phonkdex Genre Map</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <style>
-    body {
-      background-color: #1e1e1e;
-      margin: 0;
-      overflow: hidden;
-    }
-    text {
-      fill: white;
-      font-size: 14px;
-    }
-    line {
-      stroke: white;
-      stroke-width: 1px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genre and Artist Network</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #fff;
+            overflow: hidden;
+        }
+        svg {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-  <script src="map.js"></script>
+    <script>
+        const data = {
+            nodes: [
+                { id: "Phonk", group: 1 },
+                { id: "DJ Smokey", group: 2 },
+                { id: "MC Holocaust", group: 2 },
+                { id: "Soulzay", group: 2 },
+                { id: "Shoegaze", group: 1 },
+                { id: "My Bloody Valentine", group: 3 },
+                { id: "Slowdive", group: 3 },
+                { id: "Cocteau Twins", group: 3 },
+                { id: "Memphis Rap", group: 1 },
+                { id: "Three 6 Mafia", group: 4 },
+                { id: "Gangsta Pat", group: 4 },
+                { id: "Kingpin Skinny Pimp", group: 4 },
+                { id: "Lo-Fi", group: 1 },
+                { id: "Joji", group: 5 },
+                { id: "Shiloh Dynasty", group: 5 },
+                { id: "In Love With A Ghost", group: 5 }
+            ],
+            links: [
+                { source: "Phonk", target: "DJ Smokey" },
+                { source: "Phonk", target: "MC Holocaust" },
+                { source: "Phonk", target: "Soulzay" },
+                { source: "Shoegaze", target: "My Bloody Valentine" },
+                { source: "Shoegaze", target: "Slowdive" },
+                { source: "Shoegaze", target: "Cocteau Twins" },
+                { source: "Memphis Rap", target: "Three 6 Mafia" },
+                { source: "Memphis Rap", target: "Gangsta Pat" },
+                { source: "Memphis Rap", target: "Kingpin Skinny Pimp" },
+                { source: "Lo-Fi", target: "Joji" },
+                { source: "Lo-Fi", target: "Shiloh Dynasty" },
+                { source: "Lo-Fi", target: "In Love With A Ghost" }
+            ]
+        };
+
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const simulation = d3.forceSimulation(data.nodes)
+            .force("link", d3.forceLink(data.links).id(d => d.id).distance(100))
+            .force("charge", d3.forceManyBody().strength(-300))
+            .force("center", d3.forceCenter(width / 2, height / 2));
+
+        const link = svg.append("g")
+            .attr("class", "links")
+            .selectAll("line")
+            .data(data.links)
+            .enter().append("line")
+            .attr("stroke", "#999")
+            .attr("stroke-opacity", 0.6)
+            .attr("stroke-width", 1.5);
+
+        const node = svg.append("g")
+            .attr("class", "nodes")
+            .selectAll("circle")
+            .data(data.nodes)
+            .enter().append("circle")
+            .attr("r", 8)
+            .attr("fill", d => d.group === 1 ? "#ff6f61" : "#4f81bd")
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        const label = svg.append("g")
+            .attr("class", "labels")
+            .selectAll("text")
+            .data(data.nodes)
+            .enter().append("text")
+            .text(d => d.id)
+            .attr("x", 10)
+            .attr("y", 3)
+            .style("fill", "#fff")
+            .style("font-size", "12px")
+            .style("pointer-events", "none");
+
+        simulation.nodes(data.nodes).on("tick", ticked);
+        simulation.force("link").links(data.links);
+
+        function ticked() {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            node
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y);
+
+            label
+                .attr("x", d => d.x + 10)
+                .attr("y", d => d.y + 3);
+        }
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+    </script>
 </body>
 </html>
