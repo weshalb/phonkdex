@@ -1,5 +1,18 @@
 {
-  "nodes": [],
-  "links": []
+  "nodes": [
+    {
+      "id": "lykia",
+      "group": 1
+    }
+  ],
+  "links": [
+    {
+      "source": "lykia",
+      "target": "SXNRISE"
+    },
+    {
+      "source": "lykia",
+      "target": "KLEAVE"
+    }
+  ]
 }
-
