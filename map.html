@@ -21,145 +21,121 @@
 </head>
 <body>
     <script>
-        const data = {
-            nodes: [
-                { id: "Phonk", group: 1 },
-                { id: "DJ Smokey", group: 2 },
-                { id: "MC Holocaust", group: 2 },
-                { id: "Soulzay", group: 2 },
-                { id: "Shoegaze", group: 1 },
-                { id: "My Bloody Valentine", group: 3 },
-                { id: "Slowdive", group: 3 },
-                { id: "Cocteau Twins", group: 3 },
-                { id: "Memphis Rap", group: 1 },
-                { id: "Three 6 Mafia", group: 4 },
-                { id: "Gangsta Pat", group: 4 },
-                { id: "Kingpin Skinny Pimp", group: 4 },
-                { id: "Lo-Fi", group: 1 },
-                { id: "Joji", group: 5 },
-                { id: "Shiloh Dynasty", group: 5 },
-                { id: "In Love With A Ghost", group: 5 }
-            ],
-            links: [
-                { source: "Phonk", target: "DJ Smokey" },
-                { source: "Phonk", target: "MC Holocaust" },
-                { source: "Phonk", target: "Soulzay" },
-                { source: "Phonk", target: "Shoegaze" },
-                { source: "Phonk", target: "Memphis Rap" },
-                { source: "Phonk", target: "Lo-Fi" },
-                { source: "Shoegaze", target: "My Bloody Valentine" },
-                { source: "Shoegaze", target: "Slowdive" },
-                { source: "Shoegaze", target: "Cocteau Twins" },
-                { source: "Memphis Rap", target: "Three 6 Mafia" },
-                { source: "Memphis Rap", target: "Gangsta Pat" },
-                { source: "Memphis Rap", target: "Kingpin Skinny Pimp" },
-                { source: "Lo-Fi", target: "Joji" },
-                { source: "Lo-Fi", target: "Shiloh Dynasty" },
-                { source: "Lo-Fi", target: "In Love With A Ghost" }
-            ]
-        };
+        const jsonUrl = "https://phonkdex.com/tree-data/tree.json";
 
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        fetch(jsonUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
 
-        const svg = d3.select("body").append("svg")
-            .attr("width", width)
-            .attr("height", height);
+                const svg = d3.select("body").append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
 
-        const container = svg.append("g");
+                const container = svg.append("g");
 
-        // Add background stars
-        const starCount = 200;
-        for (let i = 0; i < starCount; i++) {
-            svg.append("circle")
-                .attr("cx", Math.random() * width)
-                .attr("cy", Math.random() * height)
-                .attr("r", Math.random() * 2)
-                .attr("fill", "#fff")
-                .attr("opacity", 0.5);
-        }
+                // Add background stars
+                const starCount = 200;
+                for (let i = 0; i < starCount; i++) {
+                    svg.append("circle")
+                        .attr("cx", Math.random() * width)
+                        .attr("cy", Math.random() * height)
+                        .attr("r", Math.random() * 2)
+                        .attr("fill", "#fff")
+                        .attr("opacity", 0.5);
+                }
 
-        const zoom = d3.zoom()
-            .scaleExtent([0.5, 2])
-            .on("zoom", (event) => {
-                container.attr("transform", event.transform);
-            });
+                const zoom = d3.zoom()
+                    .scaleExtent([0.5, 2])
+                    .on("zoom", (event) => {
+                        container.attr("transform", event.transform);
+                    });
 
-        svg.call(zoom);
+                svg.call(zoom);
 
-        const simulation = d3.forceSimulation(data.nodes)
-            .force("link", d3.forceLink(data.links).id(d => d.id).distance(150))
-            .force("charge", d3.forceManyBody().strength(-500))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+                const simulation = d3.forceSimulation(data.nodes)
+                    .force("link", d3.forceLink(data.links).id(d => d.id).distance(150))
+                    .force("charge", d3.forceManyBody().strength(-500))
+                    .force("center", d3.forceCenter(width / 2, height / 2));
 
-        const link = container.append("g")
-            .attr("class", "links")
-            .selectAll("line")
-            .data(data.links)
-            .enter().append("line")
-            .attr("stroke", "#999")
-            .attr("stroke-opacity", 0.6)
-            .attr("stroke-width", 1.5);
+                const link = container.append("g")
+                    .attr("class", "links")
+                    .selectAll("line")
+                    .data(data.links)
+                    .enter().append("line")
+                    .attr("stroke", "#999")
+                    .attr("stroke-opacity", 0.6)
+                    .attr("stroke-width", 1.5);
 
-        const node = container.append("g")
-            .attr("class", "nodes")
-            .selectAll("circle")
-            .data(data.nodes)
-            .enter().append("circle")
-            .attr("r", 8)
-            .attr("fill", d => d.group === 1 ? "#fff" : "#000")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+                const node = container.append("g")
+                    .attr("class", "nodes")
+                    .selectAll("circle")
+                    .data(data.nodes)
+                    .enter().append("circle")
+                    .attr("r", d => d.id === "Phonk" ? 12 : 8) // Larger radius for "Phonk"
+                    .attr("fill", d => d.id === "Phonk" ? "#ff6f61" : (d.group === 1 ? "#fff" : "#000"))
+                    .call(d3.drag()
+                        .on("start", dragstarted)
+                        .on("drag", dragged)
+                        .on("end", dragended));
 
-        const label = container.append("g")
-            .attr("class", "labels")
-            .selectAll("text")
-            .data(data.nodes)
-            .enter().append("text")
-            .text(d => d.id)
-            .attr("x", 10)
-            .attr("y", 3)
-            .style("fill", "#fff")
-            .style("font-size", "12px")
-            .style("pointer-events", "none");
+                const label = container.append("g")
+                    .attr("class", "labels")
+                    .selectAll("text")
+                    .data(data.nodes)
+                    .enter().append("text")
+                    .text(d => d.id)
+                    .attr("x", 10)
+                    .attr("y", 3)
+                    .style("fill", "#fff")
+                    .style("font-size", "12px")
+                    .style("pointer-events", "none");
 
-        simulation.nodes(data.nodes).on("tick", ticked);
-        simulation.force("link").links(data.links);
+                simulation.nodes(data.nodes).on("tick", ticked);
+                simulation.force("link").links(data.links);
 
-        function ticked() {
-            link
-                .attr("x1", d => d.source.x)
-                .attr("y1", d => d.source.y)
-                .attr("x2", d => d.target.x)
-                .attr("y2", d => d.target.y);
+                function ticked() {
+                    link
+                        .attr("x1", d => d.source.x)
+                        .attr("y1", d => d.source.y)
+                        .attr("x2", d => d.target.x)
+                        .attr("y2", d => d.target.y);
 
-            node
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y);
+                    node
+                        .attr("cx", d => d.x)
+                        .attr("cy", d => d.y);
 
-            label
-                .attr("x", d => d.x + 10)
-                .attr("y", d => d.y + 3);
-        }
+                    label
+                        .attr("x", d => d.x + 10)
+                        .attr("y", d => d.y + 3);
+                }
 
-        function dragstarted(event, d) {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
+                function dragstarted(event, d) {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                }
 
-        function dragged(event, d) {
-            d.fx = event.x;
-            d.fy = event.y;
-        }
+                function dragged(event, d) {
+                    d.fx = event.x;
+                    d.fy = event.y;
+                }
 
-        function dragended(event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
+                function dragended(event, d) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    if (d.id !== "Phonk") { // Prevent "Phonk" from being draggable
+                        d.fx = null;
+                        d.fy = null;
+                    }
+                }
+            })
+            .catch(error => console.error('Error loading JSON data:', error));
     </script>
 </body>
 </html>
