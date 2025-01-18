@@ -7,6 +7,10 @@
     {
       "id": "KLEAVE",
       "group": 0
+    },
+    {
+      "id": "KLEAVE",
+      "group": 31
     }
   ],
   "links": [
@@ -17,6 +21,10 @@
     {
       "source": "lykia",
       "target": "KLEAVE"
+    },
+    {
+      "source": "KLEAVE",
+      "target": "lykia"
     },
     {
       "source": "KLEAVE",
