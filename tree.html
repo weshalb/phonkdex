@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Genre and Artist Network</title>
+    <title>Genre and Artist Network</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
     <style>
         body {
@@ -75,34 +75,19 @@
 
             // Add background stars
             const starCount = 200;
-            const stars = [];
             for (let i = 0; i < starCount; i++) {
-                stars.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    r: Math.random() * 2
-                });
+                svg.append("circle")
+                    .attr("cx", Math.random() * width)
+                    .attr("cy", Math.random() * height)
+                    .attr("r", Math.random() * 2)
+                    .attr("fill", "#fff")
+                    .attr("opacity", 0.5);
             }
-
-            const starElements = container.append("g")
-                .selectAll("circle")
-                .data(stars)
-                .enter().append("circle")
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y)
-                .attr("r", d => d.r)
-                .attr("fill", "#fff")
-                .attr("opacity", 0.5);
 
             const zoom = d3.zoom()
                 .scaleExtent([0.5, 2])
-                .on("zoom", event => {
+                .on("zoom", (event) => {
                     container.attr("transform", event.transform);
-
-                    // Move stars slightly to give the illusion of parallax
-                    const transform = event.transform;
-                    starElements.attr("cx", d => transform.x + d.x * transform.k)
-                        .attr("cy", d => transform.y + d.y * transform.k);
                 });
 
             svg.call(zoom);
