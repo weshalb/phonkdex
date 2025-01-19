@@ -24,6 +24,10 @@
         const genre = "Phonk";
         const artistsUrl = "https://phonkdex.com/artists/artists.json"; // JSON file containing the artist list
 
+        const genre = "Phonk"; // Main genre
+        const artistsUrl = "https://phonkdex.com/artists.json"; // JSON file containing artist HTML filenames
+        const baseArtistUrl = "https://phonkdex.com/artists/"; // Base URL for artist HTML files
+
         // Fetch the artists JSON
         fetch(artistsUrl)
             .then(response => response.json())
@@ -33,7 +37,7 @@
 
                 // Fetch artist details
                 const artistFetches = artistFiles.map(artistFile =>
-                    fetch(artistFile)
+                    fetch(baseArtistUrl + artistFile)
                         .then(response => response.text())
                         .then(html => {
                             const parser = new DOMParser();
@@ -145,5 +149,7 @@
             }
         }
     </script>
+</body>
+</html>
 </body>
 </html>
