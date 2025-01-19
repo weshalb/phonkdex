@@ -1,4 +1,22 @@
 {
-  "nodes": [],
-  "links": []
+  "nodes": [
+    {
+      "id": "Other",
+      "group": 1
+    },
+    {
+      "id": "KLEAVE",
+      "group": 2
+    }
+  ],
+  "links": [
+    {
+      "source": "Other",
+      "target": "KLEAVE"
+    },
+    {
+      "source": "KLEAVE",
+      "target": "lykia"
+    }
+  ]
 }
