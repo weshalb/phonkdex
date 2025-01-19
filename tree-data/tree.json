@@ -15,6 +15,10 @@
     {
       "id": "lykia",
       "group": 2
+    },
+    {
+      "id": "ZMAJOR",
+      "group": 2
     }
   ],
   "links": [
@@ -37,6 +41,26 @@
     {
       "source": "lykia",
       "target": "KLEAVE"
+    },
+    {
+      "source": "Other",
+      "target": "ZMAJOR"
+    },
+    {
+      "source": "ZMAJOR",
+      "target": "lykia"
+    },
+    {
+      "source": "ZMAJOR",
+      "target": "KLEAVE"
+    },
+    {
+      "source": "ZMAJOR",
+      "target": "hxrtly"
+    },
+    {
+      "source": "ZMAJOR",
+      "target": "HXI"
     }
   ]
 }
