@@ -24,118 +24,140 @@
         const jsonUrl = "https://phonkdex.com/tree-data/tree.json";
 
         fetch(jsonUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const width = window.innerWidth;
-                const height = window.innerHeight;
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
 
-                const svg = d3.select("body").append("svg")
-                    .attr("width", width)
-                    .attr("height", height);
+        const svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
 
-                const container = svg.append("g");
+        const container = svg.append("g");
 
-                // Add background stars
-                const starCount = 200;
-                for (let i = 0; i < starCount; i++) {
-                    svg.append("circle")
-                        .attr("cx", Math.random() * width)
-                        .attr("cy", Math.random() * height)
-                        .attr("r", Math.random() * 2)
-                        .attr("fill", "#fff")
-                        .attr("opacity", 0.5);
-                }
+        // Add background stars
+        const starCount = 200;
+        for (let i = 0; i < starCount; i++) {
+            svg.append("circle")
+                .attr("cx", Math.random() * width)
+                .attr("cy", Math.random() * height)
+                .attr("r", Math.random() * 2)
+                .attr("fill", "#fff")
+                .attr("opacity", 0.5);
+        }
 
-                const zoom = d3.zoom()
-                    .scaleExtent([0.5, 2])
-                    .on("zoom", (event) => {
-                        container.attr("transform", event.transform);
-                    });
+        // Handle missing nodes dynamically
+        const allNodeIds = new Set(data.nodes.map(node => node.id));
+        data.links.forEach(link => {
+            if (!allNodeIds.has(link.source)) {
+                data.nodes.push({ id: link.source, group: 0 }); // Placeholder group
+                allNodeIds.add(link.source);
+            }
+            if (!allNodeIds.has(link.target)) {
+                data.nodes.push({ id: link.target, group: 0 }); // Placeholder group
+                allNodeIds.add(link.target);
+            }
+        });
 
-                svg.call(zoom);
+        const missingNodes = data.links.filter(link => 
+            !allNodeIds.has(link.source) || !allNodeIds.has(link.target)
+        );
 
-                const simulation = d3.forceSimulation(data.nodes)
-                    .force("link", d3.forceLink(data.links).id(d => d.id).distance(150))
-                    .force("charge", d3.forceManyBody().strength(-500))
-                    .force("center", d3.forceCenter(width / 2, height / 2));
+        if (missingNodes.length > 0) {
+            console.warn("Missing nodes for links:", missingNodes);
+        }
 
-                const link = container.append("g")
-                    .attr("class", "links")
-                    .selectAll("line")
-                    .data(data.links)
-                    .enter().append("line")
-                    .attr("stroke", "#999")
-                    .attr("stroke-opacity", d => d.source.group === 1 || d.target.group === 1 ? 0.6 : 0.3) // Make artist links more transparent
-                    .attr("stroke-width", 1.5);
+        const zoom = d3.zoom()
+            .scaleExtent([0.5, 2])
+            .on("zoom", (event) => {
+                container.attr("transform", event.transform);
+            });
 
-                const node = container.append("g")
-                    .attr("class", "nodes")
-                    .selectAll("circle")
-                    .data(data.nodes)
-                    .enter().append("circle")
-                    .attr("r", d => d.group === 1 ? 14 : (d.id === "Phonk" ? 12 : 8)) // Larger radius for genres and "Phonk"
-                    .attr("fill", d => d.group === 1 ? "#4CAF50" : (d.id === "Phonk" ? "#ff6f61" : "#000"))
-                    .call(d3.drag()
-                        .on("start", dragstarted)
-                        .on("drag", dragged)
-                        .on("end", dragended));
+        svg.call(zoom);
 
-                const label = container.append("g")
-                    .attr("class", "labels")
-                    .selectAll("text")
-                    .data(data.nodes)
-                    .enter().append("text")
-                    .text(d => d.id)
-                    .attr("x", 10)
-                    .attr("y", 3)
-                    .style("fill", "#fff")
-                    .style("font-size", "12px")
-                    .style("pointer-events", "none");
+        const simulation = d3.forceSimulation(data.nodes)
+            .force("link", d3.forceLink(data.links).id(d => d.id).distance(150))
+            .force("charge", d3.forceManyBody().strength(-500))
+            .force("center", d3.forceCenter(width / 2, height / 2));
 
-                simulation.nodes(data.nodes).on("tick", ticked);
-                simulation.force("link").links(data.links);
+        const link = container.append("g")
+            .attr("class", "links")
+            .selectAll("line")
+            .data(data.links)
+            .enter().append("line")
+            .attr("stroke", "#999")
+            .attr("stroke-opacity", d => d.source.group === 1 || d.target.group === 1 ? 0.6 : 0.3)
+            .attr("stroke-width", 1.5);
 
-                function ticked() {
-                    link
-                        .attr("x1", d => d.source.x)
-                        .attr("y1", d => d.source.y)
-                        .attr("x2", d => d.target.x)
-                        .attr("y2", d => d.target.y);
+        const node = container.append("g")
+            .attr("class", "nodes")
+            .selectAll("circle")
+            .data(data.nodes)
+            .enter().append("circle")
+            .attr("r", d => d.group === 1 ? 14 : (d.id === "Phonk" ? 12 : 8))
+            .attr("fill", d => d.group === 1 ? "#4CAF50" : (d.id === "Phonk" ? "#ff6f61" : "#000"))
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
 
-                    node
-                        .attr("cx", d => d.x)
-                        .attr("cy", d => d.y);
+        const label = container.append("g")
+            .attr("class", "labels")
+            .selectAll("text")
+            .data(data.nodes)
+            .enter().append("text")
+            .text(d => d.id)
+            .attr("x", 10)
+            .attr("y", 3)
+            .style("fill", "#fff")
+            .style("font-size", "12px")
+            .style("pointer-events", "none");
 
-                    label
-                        .attr("x", d => d.x + 10)
-                        .attr("y", d => d.y + 3);
-                }
+        simulation.nodes(data.nodes).on("tick", ticked);
+        simulation.force("link").links(data.links);
 
-                function dragstarted(event, d) {
-                    if (!event.active) simulation.alphaTarget(0.3).restart();
-                    d.fx = d.x;
-                    d.fy = d.y;
-                }
+        function ticked() {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
 
-                function dragged(event, d) {
-                    d.fx = event.x;
-                    d.fy = event.y;
-                }
+            node
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y);
 
-                function dragended(event, d) {
-                    if (!event.active) simulation.alphaTarget(0);
-                    if (d.id !== "Phonk") { // Prevent "Phonk" from being draggable
-                        d.fx = null;
-                        d.fy = null;
-                    }
-                }
-            })
-            .catch(error => console.error('Error loading JSON data:', error));
+            label
+                .attr("x", d => d.x + 10)
+                .attr("y", d => d.y + 3);
+        }
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            if (d.id !== "Phonk") {
+                d.fx = null;
+                d.fy = null;
+            }
+        }
+    })
+    .catch(error => console.error('Error loading JSON data:', error));
+
     </script>
 </body>
 </html>
