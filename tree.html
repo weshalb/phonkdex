@@ -74,12 +74,12 @@
             const container = svg.append("g");
 
             // Add background stars
-            const starCount = 200;
+            const starCount = 500; // Increased star count for better coverage
             const stars = [];
             for (let i = 0; i < starCount; i++) {
                 const star = container.append("circle")
-                    .attr("cx", Math.random() * width)
-                    .attr("cy", Math.random() * height)
+                    .attr("cx", Math.random() * width * 2 - width) // Cover larger area
+                    .attr("cy", Math.random() * height * 2 - height)
                     .attr("r", Math.random() * 2)
                     .attr("fill", "#fff")
                     .attr("opacity", 0.5);
@@ -103,8 +103,8 @@
                         const swayX = star.swayX * (Math.random() < 0.5 ? -1 : 1);
                         const swayY = star.swayY * (Math.random() < 0.5 ? -1 : 1);
                         star.element
-                            .attr("cx", star.initialX + swayX)
-                            .attr("cy", star.initialY + swayY);
+                            .attr("cx", star.initialX * event.transform.k + event.transform.x + swayX)
+                            .attr("cy", star.initialY * event.transform.k + event.transform.y + swayY);
                     });
                 });
 
