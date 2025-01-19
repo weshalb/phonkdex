@@ -77,14 +77,20 @@
             const starCount = 200;
             const stars = [];
             for (let i = 0; i < starCount; i++) {
-                const star = svg.append("circle")
+                const star = container.append("circle")
                     .attr("cx", Math.random() * width)
                     .attr("cy", Math.random() * height)
                     .attr("r", Math.random() * 2)
                     .attr("fill", "#fff")
                     .attr("opacity", 0.5);
 
-                stars.push({ element: star, offsetX: Math.random() * 2 - 1, offsetY: Math.random() * 2 - 1 });
+                stars.push({
+                    element: star,
+                    initialX: parseFloat(star.attr("cx")),
+                    initialY: parseFloat(star.attr("cy")),
+                    swayX: Math.random() * 0.5,
+                    swayY: Math.random() * 0.5
+                });
             }
 
             const zoom = d3.zoom()
@@ -92,11 +98,13 @@
                 .on("zoom", event => {
                     container.attr("transform", event.transform);
 
-                    // Sway effect for stars
+                    // Update star positions for the sway effect
                     stars.forEach(star => {
-                        const x = parseFloat(star.element.attr("cx")) + star.offsetX;
-                        const y = parseFloat(star.element.attr("cy")) + star.offsetY;
-                        star.element.attr("cx", x).attr("cy", y);
+                        const swayX = star.swayX * (Math.random() < 0.5 ? -1 : 1);
+                        const swayY = star.swayY * (Math.random() < 0.5 ? -1 : 1);
+                        star.element
+                            .attr("cx", star.initialX + swayX)
+                            .attr("cy", star.initialY + swayY);
                     });
                 });
 
@@ -112,9 +120,9 @@
                 .selectAll("line")
                 .data(links)
                 .enter().append("line")
-                .attr("stroke", "#999")
-                .attr("stroke-opacity", 0.6)
-                .attr("stroke-width", 1.5);
+                .attr("stroke", d => d.source === mainGenre ? "#666" : "#999")
+                .attr("stroke-opacity", d => d.source === mainGenre ? 1.0 : 0.6)
+                .attr("stroke-width", d => d.source === mainGenre ? 2 : 1.5);
 
             const node = container.append("g")
                 .attr("class", "nodes")
@@ -122,7 +130,7 @@
                 .data(nodes)
                 .enter().append("circle")
                 .attr("r", d => d.group === 1 ? 14 : (d.group === 2 ? 10 : 8)) // Main genre > subgenre > artist
-                .attr("fill", d => d.group === 1 ? "#4CAF50" : (d.group === 2 ? "#ff6f61" : "#fff"))
+                .attr("fill", d => d.group === 1 ? "#000" : (d.group === 2 ? "#444" : "#fff"))
                 .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
