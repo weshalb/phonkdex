@@ -1,26 +1,4 @@
 {
-  "nodes": [
-    {
-      "id": "lykia",
-      "group": 1
-    },
-    {
-      "id": "KLEAVE",
-      "group": 31
-    }
-  ],
-  "links": [
-    {
-      "source": "lykia",
-      "target": "SXNRISE"
-    },
-    {
-      "source": "lykia",
-      "target": "KLEAVE"
-    },
-    {
-      "source": "KLEAVE",
-      "target": "lykia"
-    }
-  ]
+  "nodes": [],
+  "links": []
 }
