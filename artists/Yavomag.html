@@ -1,0 +1,430 @@
+
+          <!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="https://phonkdex.com/images/favicon.ico" type="image/x-icon"/>
+
+    <meta name="google-site-verification" content="dRhrlLCAuUwtDoCG9ZPM69LSTcedfh-uLsydDWw3htw" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhonkDex</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d, #262626);
+            color: #fff;
+            overflow-x: hidden;
+            animation: gradientMove 10s infinite alternate;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: #444;
+            color: #ddd;
+        }
+.hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(135deg, #000000, #222222, #555555, #111111); animation: pulseBg 8s infinite; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8); } .hero::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0.1)); pointer-events: none; z-index: 1; } .hero h1, .hero p, .hero button { position: relative; z-index: 2; /* Place the text above the overlay */ }
+
+        @keyframes pulseBg {
+            0%, 100% { background-size: 150%; }
+            50% { background-size: 200%; }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            animation: zoomIn 1s ease-out;
+        }
+
+        @keyframes zoomIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+.hero button {
+    margin-top: 30px;
+    padding: 12px 25px;
+    background: rgba(50, 50, 50, 0.9);
+    border: 1px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0; /* Start hidden */
+    transform: translateY(20px); /* Start slightly lower */
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out; /* Ensure smooth hover scaling */
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 1.5s; /* Adjust timing if needed */
+    animation-fill-mode: forwards; /* Ensure the final state of the animation persists */
+}
+
+.hero button:hover {
+    background: rgba(80, 80, 80, 0.9); /* Darken background on hover */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Move to its final position */
+    }
+}
+
+        .content-section button {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .content-section button:hover {
+            background: rgba(80, 80, 80, 0.9);
+            transform: scale(1.1);
+        }
+
+        .content-section {
+            padding: 60px 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 15px;
+            margin: 30px auto;
+            max-width: 1200px;
+            animation: fadeIn 2s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .content-section:nth-child(even) {
+            background: linear-gradient(135deg, #1a1a1a, #333333);
+        }
+
+        .content-section h2 {
+            margin-bottom: 30px;
+            font-size: 2.8rem;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            width: 100%;
+            text-align: left;
+            transition: transform 0.3s ease, background-color 0.3s;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+      .hero img {
+            width: 20%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card:hover {
+            transform: scale(1.01);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        footer {
+            padding: 30px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        footer p {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        @media screen and (max-width: 768px) {
+    nav {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 60px; /* Adjusted for smaller header height */
+        right: 0;
+        width: 100%;
+        padding: 15px; /* Reduced padding for a compact look */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .menu-icon {
+        display: block;
+        font-size: 1.5rem; /* Smaller menu icon */
+        cursor: pointer;
+    }
+
+    nav a {
+        display: block;
+        margin: 8px 0; /* Reduced spacing between links */
+        text-align: center;
+        font-size: 0.9rem; /* Smaller text size */
+        padding: 6px 10px; /* Smaller padding */
+    }
+
+    nav.show {
+        display: flex;
+    }
+
+    body {
+        font-size: 90%; /* Reduce the base font size */
+    }
+
+    .hero h1 {
+        font-size: 2.8rem; /* Adjust the hero section heading */
+    }
+
+    .hero p {
+        font-size: 1rem; /* Adjust the hero section paragraph */
+    }
+
+    .content-section h2 {
+        font-size: 1.8rem; /* Adjust section titles */
+    }
+
+    .content-section p, .card p {
+        font-size: 0.85rem; /* Adjust general text and card text */
+    }
+
+.hero img {
+            width: 50%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+    footer p {
+        font-size: 0.7rem; /* Adjust footer text */
+    }
+}
+
+        @media screen and (min-width: 769px) {
+    .menu-icon {
+        display: none !important; /* Ensure it overrides other rules */
+    }
+
+    nav {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        box-shadow: none;
+    }
+
+            html, body {
+    height: 100%;
+    overflow-y: auto; /* Ensure vertical scrolling works */
+}
+
+            html {
+    overflow-x: hidden; /* Ensure no horizontal scrolling at the root level */
+}
+        }
+
+           
+
+.hero-partners {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    font-size: 1rem;
+    color: #fff;
+    z-index: 3; /* Ensures it appears above the overlay */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hero-partners a {
+    display: inline-block;
+    opacity: 0.6; /* 60% opacity */
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.hero-partners a:hover {
+    opacity: 1; /* Fully visible on hover */
+    transform: scale(1.2); /* Slight zoom effect on hover */
+}
+
+.hero-partners img {
+    height: 50px; /* Adjust size */
+    width: 50px; /* Adjust size */
+    filter: brightness(0) invert(1); /* Ensures icons are white */
+}
+
+.hero-discord {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    z-index: 3; /* Ensures it appears above the overlay */
+    opacity: 0.6; /* 60% opacity */
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.hero-discord:hover {
+    opacity: 1; /* Fully visible on hover */
+    transform: scale(1.2); /* Slight zoom effect on hover */
+}
+
+.hero-discord img {
+    height: 50px; /* Adjust size */
+    width: 50px; /* Adjust size */
+    filter: brightness(0) invert(1); /* Ensures the icon is white */
+}
+
+
+    </style>
+    <script>
+        function toggleMenu() {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('show');
+        }
+
+        function scrollToNews() {
+    const firstQuestion = document.getElementById("description");
+    firstQuestion.scrollIntoView({ behavior: "smooth" });
+}
+
+
+    
+    </script>
+
+    
+</head>
+<body>
+    <header>
+        <a href="https://phonkdex.de" style="text-decoration: none;">
+    <div class="logo">PhonkDex</div>
+</a>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <nav>
+            <a href="#description">DESCRIPTION</a>
+            <a href="#links">LINKS</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <img src="https://ibb.co/sPNqysX" alt="Artist Picture">
+        <h1>Yavomag</h1>
+        <p>#Other</p>
+        <button onclick="scrollToNews()">See More</button>
+</div>
+
+    <div id="description" class="content-section">
+    <h2>Description</h2>
+<div class="card-container">
+       <div class="card">
+         <p>Based in Cyprus. Makes multiple genres of phonk. Part of error-308, mystic plug & murder posse</p>
+</div>
+</div>
+</div>
+
+    <div id="links" class="content-section">
+        <h2>Links</h2>
+<div class="card-container">
+            <div class="card">
+                <p><a href="https://open.spotify.com/wrapped/share/share-a03697edc7c540ddaecf688aa6b9284f?si=8ni2JfJbRY6DJpryudAN9w&artist-id=7n0FLC0AmAsdOb30OAzRzz&feature=wrapped" target="_blank" style="text-decoration: none; color: white">https://open.spotify.com/wrapped/share/share-a03697edc7c540ddaecf688aa6b9284f?si=8ni2JfJbRY6DJpryudAN9w&artist-id=7n0FLC0AmAsdOb30OAzRzz&feature=wrapped</a></p>
+    </div>
+</div>
+</div>
+
+    <footer>
+        <p>&copy; 2024 PhonkDex. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
+        
