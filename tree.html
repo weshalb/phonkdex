@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Genre and Artist Network</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.4/d3.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #fff;
+            overflow: hidden;
+        }
+        svg {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const genre = "Phonk";
+        const artistsUrl = "artists.json"; // JSON file containing the artist list
+
+        // Fetch the artists JSON
+        fetch(artistsUrl)
+            .then(response => response.json())
+            .then(artistFiles => {
+                const nodes = [{ id: genre, group: 1 }]; // Main genre node
+                const links = [];
+
+                // Fetch artist details
+                const artistFetches = artistFiles.map(artistFile =>
+                    fetch(artistFile)
+                        .then(response => response.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, "text/html");
+
+                            const name = doc.querySelector("h1").textContent.trim();
+                            const artistGenre = doc.querySelector("p").textContent.trim().replace("#", "");
+
+                            // Add artist node and link to main genre
+                            nodes.push({ id: name, group: 2, genre: artistGenre });
+                            links.push({ source: genre, target: name });
+                        })
+                        .catch(error => console.error(`Error loading artist file ${artistFile}:`, error))
+                );
+
+                // Render the graph after fetching all artist details
+                Promise.all(artistFetches).then(() => renderGraph(nodes, links));
+            })
+            .catch(error => console.error("Error loading artists.json:", error));
+
+        function renderGraph(nodes, links) {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            const svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            const container = svg.append("g");
+
+            const zoom = d3.zoom()
+                .scaleExtent([0.5, 2])
+                .on("zoom", event => container.attr("transform", event.transform));
+
+            svg.call(zoom);
+
+            const simulation = d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+                .force("charge", d3.forceManyBody().strength(-500))
+                .force("center", d3.forceCenter(width / 2, height / 2));
+
+            const link = container.append("g")
+                .attr("class", "links")
+                .selectAll("line")
+                .data(links)
+                .enter().append("line")
+                .attr("stroke", "#999")
+                .attr("stroke-opacity", 0.6)
+                .attr("stroke-width", 1.5);
+
+            const node = container.append("g")
+                .attr("class", "nodes")
+                .selectAll("circle")
+                .data(nodes)
+                .enter().append("circle")
+                .attr("r", d => d.group === 1 ? 14 : 8) // Larger for main genre
+                .attr("fill", d => d.group === 1 ? "#4CAF50" : "#fff")
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            const label = container.append("g")
+                .attr("class", "labels")
+                .selectAll("text")
+                .data(nodes)
+                .enter().append("text")
+                .text(d => `${d.id} (${d.genre || ""})`)
+                .attr("x", 10)
+                .attr("y", 3)
+                .style("fill", "#fff")
+                .style("font-size", "12px")
+                .style("pointer-events", "none");
+
+            simulation.nodes(nodes).on("tick", ticked);
+            simulation.force("link").links(links);
+
+            function ticked() {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+
+                label
+                    .attr("x", d => d.x + 10)
+                    .attr("y", d => d.y + 3);
+            }
+
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+        }
+    </script>
+</body>
+</html>
