@@ -100,7 +100,7 @@
             .data(data.nodes)
             .enter().append("circle")
             .attr("r", d => d.group === 1 ? 14 : (d.id === "Phonk" ? 12 : 8))
-            .attr("fill", d => d.group === 1 ? "#4CAF50" : (d.id === "Phonk" ? "#ff6f61" : "#000"))
+            .attr("fill", d => d.group === 1 ? "#4CAF50" : (d.id === "Phonk" ? "#ff6f61" : "#fff"))
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
