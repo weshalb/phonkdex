@@ -254,46 +254,36 @@
             position: relative;
             color: white;
             display: inline-block;
-            animation: glitch-text 1.5s infinite;
-        }
-
-        @keyframes glitch-text {
-            0% {
-                text-shadow: 2px 2px red, -2px -2px blue;
-                transform: translate(0, 0) skewX(0deg);
-            }
-            25% {
-                text-shadow: -2px -2px lime, 2px 2px cyan;
-                transform: translate(-2px, 2px) skewX(-5deg);
-            }
-            50% {
-                text-shadow: 4px -4px magenta, -4px 4px yellow;
-                transform: translate(2px, -2px) skewX(5deg);
-            }
-            75% {
-                text-shadow: -1px 1px red, 1px -1px blue;
-                transform: translate(0, 0) skewX(-3deg);
-            }
-            100% {
-                text-shadow: 2px 2px lime, -2px -2px cyan;
-                transform: translate(0, 0) skewX(0deg);
-            }
-        }
-
-        @keyframes glitch-char {
-            0% { opacity: 1; }
-            25% { opacity: 0.5; transform: translateY(-2px); }
-            50% { opacity: 1; transform: translateY(0); }
-            75% { opacity: 0.5; transform: translateY(2px); }
-            100% { opacity: 1; transform: translateY(0); }
+            overflow: hidden;
         }
 
         .glitch span {
             display: inline-block;
-            animation: glitch-char 1s infinite;
-            animation-delay: calc(0.1s * var(--i));
+            animation: glitch-char 0.2s infinite;
         }
 
+        @keyframes glitch-char {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            25% {
+                transform: translateY(-10px);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(10px);
+                opacity: 0.5;
+            }
+            75% {
+                transform: translateY(-5px);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
 
 
         
@@ -606,19 +596,37 @@
 
 
 
-       document.addEventListener("DOMContentLoaded", () => {
-            const glitchText = "???";
-            const glitchHeader = document.getElementById("glitch-header");
+       const glitchText = "???";
+        const glitchHeader = document.getElementById("glitch-header");
+        const glitchSymbols = ["シ", "⊑", "!", "⊿", "⊠", "□", "?", "!", "#"];
 
-            function applyGlitchEffect(text, element) {
-                element.innerHTML = text
+        function generateGlitchText(baseText) {
+            return baseText
+                .split("")
+                .map(char => {
+                    const randomSymbol = glitchSymbols[Math.floor(Math.random() * glitchSymbols.length)];
+                    return Math.random() > 0.5 ? char : randomSymbol;
+                })
+                .join("");
+        }
+
+        function applyGlitchEffect() {
+            const baseText = glitchText;
+            glitchHeader.innerHTML = baseText
+                .split("")
+                .map((char, i) => `<span style="--i:${i}">${char}</span>`) // Wrap each character in a span
+                .join("");
+
+            setInterval(() => {
+                const glitchedText = generateGlitchText(baseText);
+                glitchHeader.innerHTML = glitchedText
                     .split("")
                     .map((char, i) => `<span style="--i:${i}">${char}</span>`) // Wrap each character in a span
                     .join("");
-            }
+            }, 200);
+        }
 
-            applyGlitchEffect(glitchText, glitchHeader);
-        });
+        applyGlitchEffect();
     </script>
 
     
@@ -727,7 +735,7 @@ BECOME A MANIAC!</p>
         </div>
         <div class="analysis-card">
             <img src="https://i.pinimg.com/originals/49/09/66/4909664c4adcbcafa8dcb9cc32a52c47.gif" alt="?!?">
-            <h3 class="glitch" id="glitch-header">???</h3>
+            <h3 class="glitch" id="glitch-header"></h3>
         </div>
     </div>
     </div>
