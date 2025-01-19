@@ -599,14 +599,14 @@
        document.addEventListener("DOMContentLoaded", () => {
             const glitchText = "???";
             const glitchHeader = document.getElementById("glitch-header");
-            const glitchSymbols = ["X", "%", "!", "*", "#", "□", "?", "!", "="];
+            const glitchSymbols = ["X", "%", "!", "*", "#", "/", "?", "!", "="];
 
             function generateGlitchText(baseText) {
                 return baseText
                     .split("")
                     .map(char => {
                         const randomSymbol = glitchSymbols[Math.floor(Math.random() * glitchSymbols.length)];
-                        return Math.random() > 0.2 ? char : randomSymbol;
+                        return Math.random() > 0.1 ? char : randomSymbol;
                     })
                     .join("");
             }
