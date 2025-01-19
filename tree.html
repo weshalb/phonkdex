@@ -21,17 +21,17 @@
 </head>
 <body>
     <script>
-
-        const genre = "Phonk"; // Main genre
-        const artistsUrl = "https://phonkdex.com/artists/artists.json"; // JSON file containing the artist list
+        const mainGenre = "Phonk"; // Main genre
+        const artistsUrl = "https://phonkdex.com/artists/artists.json"; // JSON file containing artist HTML filenames
         const baseArtistUrl = "https://phonkdex.com/artists/"; // Base URL for artist HTML files
 
         // Fetch the artists JSON
         fetch(artistsUrl)
             .then(response => response.json())
             .then(artistFiles => {
-                const nodes = [{ id: genre, group: 1 }]; // Main genre node
+                const nodes = [{ id: mainGenre, group: 1 }]; // Main genre node
                 const links = [];
+                const subgenreSet = new Set(); // Unique subgenres
 
                 // Fetch artist details
                 const artistFetches = artistFiles.map(artistFile =>
@@ -44,9 +44,16 @@
                             const name = doc.querySelector("h1").textContent.trim();
                             const artistGenre = doc.querySelector("p").textContent.trim().replace("#", "");
 
-                            // Add artist node and link to main genre
-                            nodes.push({ id: name, group: 2, genre: artistGenre });
-                            links.push({ source: genre, target: name });
+                            // Add subgenre node if not already present
+                            if (!subgenreSet.has(artistGenre)) {
+                                nodes.push({ id: artistGenre, group: 2 }); // Subgenre node
+                                links.push({ source: mainGenre, target: artistGenre }); // Connect subgenre to main genre
+                                subgenreSet.add(artistGenre);
+                            }
+
+                            // Add artist node and link to subgenre
+                            nodes.push({ id: name, group: 3 }); // Artist node
+                            links.push({ source: artistGenre, target: name }); // Connect artist to subgenre
                         })
                         .catch(error => console.error(`Error loading artist file ${artistFile}:`, error))
                 );
@@ -66,9 +73,32 @@
 
             const container = svg.append("g");
 
+            // Add background stars
+            const starCount = 200;
+            const stars = [];
+            for (let i = 0; i < starCount; i++) {
+                const star = svg.append("circle")
+                    .attr("cx", Math.random() * width)
+                    .attr("cy", Math.random() * height)
+                    .attr("r", Math.random() * 2)
+                    .attr("fill", "#fff")
+                    .attr("opacity", 0.5);
+
+                stars.push({ element: star, offsetX: Math.random() * 2 - 1, offsetY: Math.random() * 2 - 1 });
+            }
+
             const zoom = d3.zoom()
                 .scaleExtent([0.5, 2])
-                .on("zoom", event => container.attr("transform", event.transform));
+                .on("zoom", event => {
+                    container.attr("transform", event.transform);
+
+                    // Sway effect for stars
+                    stars.forEach(star => {
+                        const x = parseFloat(star.element.attr("cx")) + star.offsetX;
+                        const y = parseFloat(star.element.attr("cy")) + star.offsetY;
+                        star.element.attr("cx", x).attr("cy", y);
+                    });
+                });
 
             svg.call(zoom);
 
@@ -91,8 +121,8 @@
                 .selectAll("circle")
                 .data(nodes)
                 .enter().append("circle")
-                .attr("r", d => d.group === 1 ? 14 : 8) // Larger for main genre
-                .attr("fill", d => d.group === 1 ? "#4CAF50" : "#fff")
+                .attr("r", d => d.group === 1 ? 14 : (d.group === 2 ? 10 : 8)) // Main genre > subgenre > artist
+                .attr("fill", d => d.group === 1 ? "#4CAF50" : (d.group === 2 ? "#ff6f61" : "#fff"))
                 .call(d3.drag()
                     .on("start", dragstarted)
                     .on("drag", dragged)
@@ -103,7 +133,7 @@
                 .selectAll("text")
                 .data(nodes)
                 .enter().append("text")
-                .text(d => `${d.id} (${d.genre || ""})`)
+                .text(d => d.id)
                 .attr("x", 10)
                 .attr("y", 3)
                 .style("fill", "#fff")
@@ -147,7 +177,5 @@
             }
         }
     </script>
-</body>
-</html>
 </body>
 </html>
