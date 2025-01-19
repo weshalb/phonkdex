@@ -606,17 +606,19 @@
 
 
 
-        const glitchText = "???";
-        const glitchHeader = document.getElementById("glitch-header");
+       document.addEventListener("DOMContentLoaded", () => {
+            const glitchText = "???";
+            const glitchHeader = document.getElementById("glitch-header");
 
-        function applyGlitchEffect(text, element) {
-            element.innerHTML = text
-                .split("")
-                .map((char, i) => `<span style="--i:${i}">${char}</span>`) // Wrap each character in a span
-                .join("");
-        }
+            function applyGlitchEffect(text, element) {
+                element.innerHTML = text
+                    .split("")
+                    .map((char, i) => `<span style="--i:${i}">${char}</span>`) // Wrap each character in a span
+                    .join("");
+            }
 
-        applyGlitchEffect(glitchText, glitchHeader);
+            applyGlitchEffect(glitchText, glitchHeader);
+        });
     </script>
 
     
