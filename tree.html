@@ -73,39 +73,27 @@
 
             const container = svg.append("g");
 
-            // Add background stars
-            const starCount = 500; // Increased star count for better coverage
-            const stars = [];
-            for (let i = 0; i < starCount; i++) {
-                const star = container.append("circle")
-                    .attr("cx", Math.random() * width * 2 - width) // Cover larger area
-                    .attr("cy", Math.random() * height * 2 - height)
-                    .attr("r", Math.random() * 2)
-                    .attr("fill", "#fff")
-                    .attr("opacity", 0.5);
+            // Add background stars only for the visible area
+            const addStars = () => {
+                const starCount = 200; // Limit star count to reduce lag
+                const visibleWidth = width;
+                const visibleHeight = height;
+                for (let i = 0; i < starCount; i++) {
+                    container.append("circle")
+                        .attr("cx", Math.random() * visibleWidth)
+                        .attr("cy", Math.random() * visibleHeight)
+                        .attr("r", Math.random() * 2)
+                        .attr("fill", "#fff")
+                        .attr("opacity", 0.5);
+                }
+            };
 
-                stars.push({
-                    element: star,
-                    initialX: parseFloat(star.attr("cx")),
-                    initialY: parseFloat(star.attr("cy")),
-                    swayX: Math.random() * 0.5,
-                    swayY: Math.random() * 0.5
-                });
-            }
+            addStars(); // Initial star rendering
 
             const zoom = d3.zoom()
                 .scaleExtent([0.5, 2])
                 .on("zoom", event => {
                     container.attr("transform", event.transform);
-
-                    // Update star positions for the sway effect
-                    stars.forEach(star => {
-                        const swayX = star.swayX * (Math.random() < 0.5 ? -1 : 1);
-                        const swayY = star.swayY * (Math.random() < 0.5 ? -1 : 1);
-                        star.element
-                            .attr("cx", star.initialX * event.transform.k + event.transform.x + swayX)
-                            .attr("cy", star.initialY * event.transform.k + event.transform.y + swayY);
-                    });
                 });
 
             svg.call(zoom);
