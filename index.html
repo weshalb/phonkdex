@@ -597,37 +597,38 @@
 
 
        document.addEventListener("DOMContentLoaded", () => {
-        const glitchText = "???";
-        const glitchHeader = document.getElementById("glitch-header");
-        const glitchSymbols = ["シ", "⊑", "!", "⊿", "⊠", "□", "?", "!", "#"];
+            const glitchText = "???";
+            const glitchHeader = document.getElementById("glitch-header");
+            const glitchSymbols = ["シ", "⊑", "!", "⊿", "⊠", "□", "?", "!", "#"];
 
-        function generateGlitchText(baseText) {
-            return baseText
-                .split("")
-                .map(char => {
-                    const randomSymbol = glitchSymbols[Math.floor(Math.random() * glitchSymbols.length)];
-                    return Math.random() > 0.5 ? char : randomSymbol;
-                })
-                .join("");
-        }
+            function generateGlitchText(baseText) {
+                return baseText
+                    .split("")
+                    .map(char => {
+                        const randomSymbol = glitchSymbols[Math.floor(Math.random() * glitchSymbols.length)];
+                        return Math.random() > 0.5 ? char : randomSymbol;
+                    })
+                    .join("");
+            }
 
-        function applyGlitchEffect() {
-            const baseText = glitchText;
-            glitchHeader.innerHTML = baseText
-                .split("")
-                .map((char, i) => `<span style="--i:${i}">${char}</span>`) // Wrap each character in a span
-                .join("");
-
-            setInterval(() => {
-                const glitchedText = generateGlitchText(baseText);
-                glitchHeader.innerHTML = glitchedText
+            function applyGlitchEffect() {
+                const baseText = glitchText;
+                glitchHeader.innerHTML = baseText
                     .split("")
                     .map((char, i) => `<span style="--i:${i}">${char}</span>`) // Wrap each character in a span
                     .join("");
-            }, 200);
-        }
 
-        applyGlitchEffect();
+                setInterval(() => {
+                    const glitchedText = generateGlitchText(baseText);
+                    glitchHeader.innerHTML = glitchedText
+                        .split("")
+                        .map((char, i) => `<span style="--i:${i}">${char}</span>`) // Wrap each character in a span
+                        .join("");
+                }, 200);
+            }
+
+            applyGlitchEffect();
+        });
     </script>
 
     
