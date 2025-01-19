@@ -487,36 +487,44 @@
         }
 
         function renderChart(data) {
-            const labels = Object.keys(data);
-            const counts = Object.values(data);
+    const labels = Object.keys(data);
+    const counts = Object.values(data);
 
-            const ctx = document.getElementById("genreChart").getContext("2d");
+    // Generate gradient colors from black to white
+    const colorScale = d3.scaleLinear()
+        .domain([0, labels.length - 1]) // Range of indices
+        .range(["#000", "#fff"]); // From black to white
 
-            new Chart(ctx, {
-                type: "pie",
-                data: {
-                    labels,
-                    datasets: [{
-                        data: counts,
-                        backgroundColor: ["#ff6f61", "#4CAF50", "#2196F3", "#FFC107", "#9C27B0"],
-                        borderColor: "#121212",
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: "bottom",
-                            labels: {
-                                color: "#fff",
-                                font: { size: 14 }
-                            }
-                        }
+    const colors = labels.map((_, index) => colorScale(index));
+
+    const ctx = document.getElementById("genreChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels,
+            datasets: [{
+                data: counts,
+                backgroundColor: colors,
+                borderColor: "#121212",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        color: "#fff",
+                        font: { size: 14 }
                     }
                 }
-            });
+            }
         }
+    });
+}
+
 
         async function init() {
             const genreData = await fetchGenreData();
