@@ -13,6 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhonkDex</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
         
@@ -215,6 +216,16 @@
             color: #ddd;
         }
 
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+            color: #fff;
+        }
+        
         footer {
             padding: 30px;
             text-align: center;
@@ -446,6 +457,73 @@
 
     // Fetch news on page load
     window.onload = fetchLatestNews;
+
+
+
+
+        const artistsUrl = "https://phonkdex.com/artists.json";
+        const baseArtistUrl = "https://phonkdex.com/artists/";
+
+        async function fetchGenreData() {
+            const response = await fetch(artistsUrl);
+            const artistFiles = await response.json();
+
+            const genreCounts = {};
+
+            const fetches = artistFiles.map(async (file) => {
+                const res = await fetch(baseArtistUrl + file);
+                const html = await res.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+                const genre = doc.querySelector("p").textContent.trim().replace("#", "");
+
+                genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+            });
+
+            await Promise.all(fetches);
+
+            return genreCounts;
+        }
+
+        function renderChart(data) {
+            const labels = Object.keys(data);
+            const counts = Object.values(data);
+
+            const ctx = document.getElementById("genreChart").getContext("2d");
+
+            new Chart(ctx, {
+                type: "pie",
+                data: {
+                    labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: ["#ff6f61", "#4CAF50", "#2196F3", "#FFC107", "#9C27B0"],
+                        borderColor: "#121212",
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                color: "#fff",
+                                font: { size: 14 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function init() {
+            const genreData = await fetchGenreData();
+            renderChart(genreData);
+        }
+
+        init();
     </script>
 
     
@@ -545,6 +623,15 @@ BECOME A MANIAC!</p>
     <button onclick="window.location.href='/genres'">More Genres</button>
 </div>
 
+    <div id="artists" class="content-section">
+        <h2>Analszis</h2>
+    <div class="card-container">
+        <div class="analysis-card">
+            <h3>Chart</h2>
+            <canvas id="genreChart"></canvas>
+        </div>
+    </div>
+    </div>
 
     <div id="artists" class="content-section">
         <h2>Top Artists</h2>
