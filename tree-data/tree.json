@@ -1,26 +1,4 @@
 {
-  "nodes": [
-    {
-      "id": "OG / Memphis Phonk",
-      "group": 1
-    },
-    {
-      "id": "lykia",
-      "group": 1
-    }
-  ],
-  "links": [
-    {
-      "source": "lykia",
-      "target": "SXNRISE"
-    },
-    {
-      "source": "lykia",
-      "target": "KLEAVE"
-    },
-    {
-      "source": "OG / Memphis Phonk",
-      "target": "lykia"
-    }
-  ]
+  "nodes": [],
+  "links": []
 }
