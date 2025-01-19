@@ -61,6 +61,10 @@
     {
       "source": "ZMAJOR",
       "target": "HXI"
+    },
+    {
+      "source": "lykia",
+      "target": "ZMAJOR"
     }
   ]
 }
