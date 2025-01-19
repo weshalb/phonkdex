@@ -74,21 +74,23 @@
             const container = svg.append("g");
 
             // Add background stars only for the visible area
-            const addStars = () => {
-                const starCount = 200; // Limit star count to reduce lag
-                const visibleWidth = width;
-                const visibleHeight = height;
-                for (let i = 0; i < starCount; i++) {
-                    container.append("circle")
-                        .attr("cx", Math.random() * visibleWidth)
-                        .attr("cy", Math.random() * visibleHeight)
-                        .attr("r", Math.random() * 2)
-                        .attr("fill", "#fff")
-                        .attr("opacity", 0.5);
-                }
-            };
+            // Add stars dynamically across a larger area
+const addStars = () => {
+    const starCount = 1000; // Higher count for better coverage
+    const starAreaSize = Math.max(width, height) * 2; // Extend star area
 
-            addStars(); // Initial star rendering
+    for (let i = 0; i < starCount; i++) {
+        container.append("circle")
+            .attr("cx", Math.random() * starAreaSize - starAreaSize / 2)
+            .attr("cy", Math.random() * starAreaSize - starAreaSize / 2)
+            .attr("r", Math.random() * 2)
+            .attr("fill", "#fff")
+            .attr("opacity", 0.5);
+    }
+};
+
+addStars();
+
 
             const zoom = d3.zoom()
                 .scaleExtent([0.5, 2])
