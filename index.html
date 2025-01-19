@@ -253,16 +253,45 @@
             font-size: 2rem;
             position: relative;
             color: white;
-            animation: glitch 1.5s infinite;
+            display: inline-block;
+            animation: glitch-text 1.5s infinite;
         }
 
-        @keyframes glitch {
-            0% { text-shadow: 2px 0 red, -2px 0 blue; }
-            20% { text-shadow: -2px 2px lime, 2px -2px pink; }
-            40% { text-shadow: -4px -4px purple, 4px 4px orange; }
-            60% { text-shadow: 0px 0px yellow, 0px 0px cyan; }
-            80% { text-shadow: -2px 2px blue, 2px -2px red; }
-            100% { text-shadow: 2px 0 lime, -2px 0 pink; }
+        @keyframes glitch-text {
+            0% {
+                text-shadow: 2px 2px red, -2px -2px blue;
+                transform: translate(0, 0) skewX(0deg);
+            }
+            25% {
+                text-shadow: -2px -2px lime, 2px 2px cyan;
+                transform: translate(-2px, 2px) skewX(-5deg);
+            }
+            50% {
+                text-shadow: 4px -4px magenta, -4px 4px yellow;
+                transform: translate(2px, -2px) skewX(5deg);
+            }
+            75% {
+                text-shadow: -1px 1px red, 1px -1px blue;
+                transform: translate(0, 0) skewX(-3deg);
+            }
+            100% {
+                text-shadow: 2px 2px lime, -2px -2px cyan;
+                transform: translate(0, 0) skewX(0deg);
+            }
+        }
+
+        @keyframes glitch-char {
+            0% { opacity: 1; }
+            25% { opacity: 0.5; transform: translateY(-2px); }
+            50% { opacity: 1; transform: translateY(0); }
+            75% { opacity: 0.5; transform: translateY(2px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .glitch span {
+            display: inline-block;
+            animation: glitch-char 1s infinite;
+            animation-delay: calc(0.1s * var(--i));
         }
 
 
@@ -574,6 +603,20 @@
         }
 
         init();
+
+
+
+        const glitchText = "???";
+        const glitchHeader = document.getElementById("glitch-header");
+
+        function applyGlitchEffect(text, element) {
+            element.innerHTML = text
+                .split("")
+                .map((char, i) => `<span style="--i:${i}">${char}</span>`) // Wrap each character in a span
+                .join("");
+        }
+
+        applyGlitchEffect(glitchText, glitchHeader);
     </script>
 
     
@@ -682,7 +725,7 @@ BECOME A MANIAC!</p>
         </div>
         <div class="analysis-card">
             <img src="https://i.pinimg.com/originals/49/09/66/4909664c4adcbcafa8dcb9cc32a52c47.gif" alt="?!?">
-            <h3 class="glitch">???</h3>
+            <h3 class="glitch" id="glitch-header">???</h3>
         </div>
     </div>
     </div>
