@@ -453,6 +453,54 @@
 }
 
 
+
+        /* Glitch out effect for the page */
+        .glitch-out {
+            animation: glitchOut 1.5s steps(10, end), fadeToBlack 1.5s forwards;
+        }
+
+        @keyframes glitchOut {
+            0% {
+                transform: translate(0);
+                filter: none;
+            }
+            25% {
+                transform: translate(-10px, 10px);
+                filter: hue-rotate(90deg);
+            }
+            50% {
+                transform: translate(10px, -10px);
+                filter: hue-rotate(180deg);
+            }
+            75% {
+                transform: translate(-5px, 5px);
+                filter: hue-rotate(270deg);
+            }
+            100% {
+                transform: translate(0);
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        @keyframes fadeToBlack {
+            0% {
+                background-color: transparent;
+            }
+            100% {
+                background-color: black;
+            }
+        }
+
+        .fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1000;
+            pointer-events: none;
+        }
     </style>
     <script>
         function toggleMenu() {
@@ -628,6 +676,19 @@
             }
 
             applyGlitchEffect();
+
+           function triggerGlitchOut() {
+                document.body.classList.add("glitch-out");
+                setTimeout(() => {
+                    window.location.href = "https://phonkdex.com/tree";
+                }, 1500); // Match the animation duration
+            }
+
+            applyGlitchEffect();
+
+            blackholeCard.addEventListener("click", () => {
+                triggerGlitchOut();
+            });
         });
     </script>
 
@@ -798,5 +859,7 @@ BECOME A MANIAC!</p>
     <footer>
         <p>&copy; 2024 PhonkDex. All Rights Reserved.</p>
     </footer>
+
+    <div class="fade-overlay" id="fade-overlay"></div>
 </body>
 </html>
