@@ -7,6 +7,14 @@
     {
       "id": "KLEAVE",
       "group": 2
+    },
+    {
+      "id": "OG / Memphis Phonk",
+      "group": 1
+    },
+    {
+      "id": "lykia",
+      "group": 2
     }
   ],
   "links": [
@@ -17,6 +25,18 @@
     {
       "source": "KLEAVE",
       "target": "lykia"
+    },
+    {
+      "source": "OG / Memphis Phonk",
+      "target": "lykia"
+    },
+    {
+      "source": "lykia",
+      "target": "SXNRISE"
+    },
+    {
+      "source": "lykia",
+      "target": "KLEAVE"
     }
   ]
 }
