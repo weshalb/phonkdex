@@ -73,29 +73,36 @@
 
             const container = svg.append("g");
 
-            // Add background stars only for the visible area
-            // Add stars dynamically across a larger area
-const addStars = () => {
-    const starCount = 1000; // Higher count for better coverage
-    const starAreaSize = Math.max(width, height) * 2; // Extend star area
+            // Add background stars
+            const starCount = 200;
+            const stars = [];
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 2
+                });
+            }
 
-    for (let i = 0; i < starCount; i++) {
-        container.append("circle")
-            .attr("cx", Math.random() * starAreaSize - starAreaSize / 2)
-            .attr("cy", Math.random() * starAreaSize - starAreaSize / 2)
-            .attr("r", Math.random() * 2)
-            .attr("fill", "#fff")
-            .attr("opacity", 0.5);
-    }
-};
-
-addStars();
-
+            const starElements = container.append("g")
+                .selectAll("circle")
+                .data(stars)
+                .enter().append("circle")
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("r", d => d.r)
+                .attr("fill", "#fff")
+                .attr("opacity", 0.5);
 
             const zoom = d3.zoom()
                 .scaleExtent([0.5, 2])
                 .on("zoom", event => {
                     container.attr("transform", event.transform);
+
+                    // Move stars slightly to give the illusion of parallax
+                    const transform = event.transform;
+                    starElements.attr("cx", d => transform.x + d.x * transform.k)
+                        .attr("cy", d => transform.y + d.y * transform.k);
                 });
 
             svg.call(zoom);
