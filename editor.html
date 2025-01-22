@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phonkdex Level Editor</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(120deg, #000, #222);
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        canvas {
+            border: 2px solid white;
+            background: #111;
+        }
+
+        #controls {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background: #FF5733;
+            color: white;
+            cursor: pointer;
+        }
+
+        #controls button:hover {
+            background: #FF4500;
+        }
+
+        #controls input {
+            font-size: 16px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Phonkdex Level Editor</h1>
+<canvas id="editorCanvas" width="800" height="400"></canvas>
+<div id="controls">
+    <button id="playAudio">Play Audio</button>
+    <button id="stopAudio">Stop Audio</button>
+    <button id="exportLevel">Export Level</button>
+    <input type="file" id="audioFileInput" accept="audio/*">
+</div>
+<audio id="audioPreview" controls style="display:none;"></audio>
+
+<script>
+    const canvas = document.getElementById('editorCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const playButton = document.getElementById('playAudio');
+    const stopButton = document.getElementById('stopAudio');
+    const exportButton = document.getElementById('exportLevel');
+    const audioFileInput = document.getElementById('audioFileInput');
+    const audioPreview = document.getElementById('audioPreview');
+
+    const lanes = [100, 250, 400, 550];
+    const laneColors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'];
+    let notes = [];
+    let startTime = null;
+    let isPlaying = false;
+
+    function drawEditor() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw lanes
+        lanes.forEach((x, index) => {
+            ctx.fillStyle = laneColors[index];
+            ctx.fillRect(x - 50, 0, 100, canvas.height);
+        });
+
+        // Draw notes
+        notes.forEach(note => {
+            ctx.fillStyle = laneColors[note.lane];
+            ctx.beginPath();
+            ctx.arc(note.x, note.y, 20, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        if (isPlaying && audioPreview.currentTime && startTime !== null) {
+            const elapsed = audioPreview.currentTime - startTime;
+            notes.forEach(note => note.y = 400 - elapsed * 200);
+        }
+
+        requestAnimationFrame(drawEditor);
+    }
+
+    canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const lane = lanes.findIndex(laneX => x > laneX - 50 && x < laneX + 50);
+        if (lane !== -1) {
+            notes.push({ x: lanes[lane], y: 400, lane, time: audioPreview.currentTime });
+        }
+    });
+
+    playButton.addEventListener('click', () => {
+        if (audioPreview.src) {
+            audioPreview.play();
+            startTime = audioPreview.currentTime;
+            isPlaying = true;
+        }
+    });
+
+    stopButton.addEventListener('click', () => {
+        audioPreview.pause();
+        isPlaying = false;
+        startTime = null;
+    });
+
+    exportButton.addEventListener('click', () => {
+        const levelData = notes.map(note => ({ lane: note.lane, time: note.time }));
+        const json = JSON.stringify(levelData, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'level.json';
+        link.click();
+        URL.revokeObjectURL(url);
+    });
+
+    audioFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            audioPreview.src = url;
+        }
+    });
+
+    drawEditor();
+</script>
+
+</body>
+</html>
