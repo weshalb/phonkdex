@@ -625,6 +625,11 @@
     const firstQuestion = document.getElementById("search");
     firstQuestion.scrollIntoView({ behavior: "smooth" });
 }
+
+        function scrollToCheck() {
+    const firstCheck = document.getElementById("check");
+    firstCheck.scrollIntoView({ behavior: "smooth" });
+}
         
         function toggleMenu() {
             const nav = document.querySelector('nav');
@@ -711,7 +716,7 @@ const genresFolderUrl = 'https://phonkdex.com/genre/';
             // Generate pagination buttons
             const totalPages = Math.ceil(filteredGenres.length / itemsPerPage);
             for (let i = 1; i <= totalPages; i++) {
-                const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i}); scrollToCheck();">${i}</button>`;
                 pagination.innerHTML += button;
             }
         }
@@ -753,7 +758,7 @@ const genresFolderUrl = 'https://phonkdex.com/genre/';
      <div class="hero">
         <h1>Genres</h1>
         <p>Explore all the subgenres of Phonk! OG / Memphis Phonk, Drift Phonk? We have it all!</p>
-        <button onclick="scrollToSearch()">Read Now</button>
+        <button id="check" onclick="scrollToSearch()">Read Now</button>
     </div>
     
     <div class="content-section">
