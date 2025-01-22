@@ -624,6 +624,11 @@
     const firstQuestion = document.getElementById("search");
     firstQuestion.scrollIntoView({ behavior: "smooth" });
 }
+
+        function scrollToCheck() {
+    const firstCheck = document.getElementById("check");
+    firstCheck.scrollIntoView({ behavior: "smooth" });
+}
         
         function toggleMenu() {
             const nav = document.querySelector('nav');
@@ -735,7 +740,7 @@ function displayArtists(page = 1) {
     // Generate pagination buttons
     const totalPages = Math.ceil(artistData.length / itemsPerPage);
     for (let i = 1; i <= totalPages; i++) {
-        const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i}); scrollToSearch();">${i}</button>`;
+        const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i}); scrollToCheck();">${i}</button>`;
         pagination.innerHTML += button;
     }
 }
