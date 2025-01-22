@@ -17,15 +17,6 @@
             display: block;
         }
 
-        .note {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #FF5733, #900C3F);
-            box-shadow: 0 0 15px rgba(255, 87, 51, 0.8), 0 0 30px rgba(144, 12, 63, 0.6);
-        }
-
         .note-area {
             position: fixed;
             bottom: 10%;
@@ -61,9 +52,12 @@
     <div id="button-f" class="button"></div>
 </div>
 
+<audio id="backgroundAudio" src="your-audio-file.mp3" preload="auto" controls style="display:none;"></audio>
+
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    const audio = document.getElementById('backgroundAudio');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -77,13 +71,32 @@
         'f': document.getElementById('button-f'),
     };
 
-    function createNote() {
-        const lane = Math.floor(Math.random() * 4);
-        notes.push({
-            x: canvas.width / 4 * lane + canvas.width / 8 - 25,
-            y: -50,
-            lane
-        });
+    const noteTimings = [
+        { time: 1000, lane: 0 },
+        { time: 1500, lane: 1 },
+        { time: 2000, lane: 2 },
+        { time: 2500, lane: 3 }
+    ];
+
+    const lanePositions = [
+        canvas.width / 8 - 35,
+        canvas.width / 8 * 3 - 35,
+        canvas.width / 8 * 5 - 35,
+        canvas.width / 8 * 7 - 35
+    ];
+
+    let startTime;
+    let score = 0;
+
+    function createNoteAtTime(timestamp) {
+        const timing = noteTimings.find(t => Math.abs(timestamp - t.time) < 50);
+        if (timing) {
+            notes.push({
+                x: lanePositions[timing.lane],
+                y: -50,
+                lane: timing.lane
+            });
+        }
     }
 
     function drawNotes() {
@@ -91,8 +104,8 @@
 
         notes.forEach(note => {
             ctx.beginPath();
-            ctx.arc(note.x + 25, note.y + 25, 25, 0, Math.PI * 2);
-            const gradient = ctx.createRadialGradient(note.x + 25, note.y + 25, 10, note.x + 25, note.y + 25, 25);
+            ctx.arc(note.x + 35, note.y + 35, 35, 0, Math.PI * 2);
+            const gradient = ctx.createRadialGradient(note.x + 35, note.y + 35, 10, note.x + 35, note.y + 35, 35);
             gradient.addColorStop(0, '#FF5733');
             gradient.addColorStop(1, '#900C3F');
             ctx.fillStyle = gradient;
@@ -108,7 +121,13 @@
         const key = e.key.toLowerCase();
         if (buttonKeys.includes(key)) {
             buttons[key].classList.add('active');
-            // Check for notes in range here if scoring implemented
+            const laneIndex = buttonKeys.indexOf(key);
+            const hitIndex = notes.findIndex(note => note.lane === laneIndex && Math.abs(note.y - canvas.height * 0.9) < 40);
+            if (hitIndex !== -1) {
+                notes.splice(hitIndex, 1);
+                score++;
+                console.log(`Score: ${score}`);
+            }
         }
     }
 
@@ -122,16 +141,21 @@
     window.addEventListener('keydown', handleKeyPress);
     window.addEventListener('keyup', handleKeyRelease);
 
-    setInterval(() => {
-        createNote();
-    }, 1000);
+    function gameLoop(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
 
-    function gameLoop() {
+        createNoteAtTime(elapsed);
         drawNotes();
         requestAnimationFrame(gameLoop);
     }
 
-    gameLoop();
+    audio.addEventListener('play', () => {
+        startTime = null;
+        requestAnimationFrame(gameLoop);
+    });
+
+    audio.play();
 </script>
 
 </body>
