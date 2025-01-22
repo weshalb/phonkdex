@@ -22,8 +22,7 @@
             bottom: 10%;
             width: 100%;
             display: flex;
-            justify-content: center;
-            gap: 2%;
+            justify-content: space-around;
         }
 
         .button {
@@ -66,7 +65,7 @@
     <div id="button-f" class="button"></div>
 </div>
 
-<audio id="backgroundAudio" src="https://phonkdex.com/audio/WestWest.mp3" preload="auto" controls style="display:none;"></audio>
+<audio id="backgroundAudio" src="your-audio-file.mp3" preload="auto" controls style="display:none;"></audio>
 <button id="startButton">Start Game</button>
 
 <script>
@@ -87,18 +86,18 @@
         'f': document.getElementById('button-f'),
     };
 
+    const buttonXPositions = [
+        canvas.width / 8, 
+        canvas.width / 8 * 3, 
+        canvas.width / 8 * 5, 
+        canvas.width / 8 * 7
+    ];
+
     const noteTimings = [
         { time: 1000, lane: 0 },
         { time: 1500, lane: 1 },
         { time: 2000, lane: 2 },
         { time: 2500, lane: 3 }
-    ];
-
-    const lanePositions = [
-        canvas.width / 8 - 35,
-        canvas.width / 8 * 3 - 35,
-        canvas.width / 8 * 5 - 35,
-        canvas.width / 8 * 7 - 35
     ];
 
     let startTime;
@@ -108,7 +107,7 @@
         const timing = noteTimings.find(t => Math.abs(timestamp - t.time) < 50);
         if (timing) {
             notes.push({
-                x: lanePositions[timing.lane],
+                x: buttonXPositions[timing.lane] - 35,
                 y: -50,
                 lane: timing.lane
             });
@@ -138,7 +137,7 @@
         if (buttonKeys.includes(key)) {
             buttons[key].classList.add('active');
             const laneIndex = buttonKeys.indexOf(key);
-            const hitIndex = notes.findIndex(note => note.lane === laneIndex && Math.abs(note.y - canvas.height * 0.9) < 40);
+            const hitIndex = notes.findIndex(note => note.lane === laneIndex && Math.abs(note.y - (canvas.height * 0.9 - 35)) < 40);
             if (hitIndex !== -1) {
                 notes.splice(hitIndex, 1);
                 score++;
