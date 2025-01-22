@@ -735,7 +735,7 @@ function displayArtists(page = 1) {
     // Generate pagination buttons
     const totalPages = Math.ceil(artistData.length / itemsPerPage);
     for (let i = 1; i <= totalPages; i++) {
-        const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+        const button = `<button class="pagination-button ${i === page ? 'active' : ''}" onclick="changePage(${i})" onclick="scrollToSearch()">${i}</button>`;
         pagination.innerHTML += button;
     }
 }
