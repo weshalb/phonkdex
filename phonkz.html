@@ -53,6 +53,21 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        .flash {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 87, 51, 0.8);
+            opacity: 0;
+            animation: flashEffect 0.3s ease-out;
+        }
+
+        @keyframes flashEffect {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2); }
+        }
     </style>
 </head>
 <body>
@@ -93,25 +108,16 @@
         canvas.width / 8 * 7
     ];
 
-    const noteTimings = [
-        { time: 1000, lane: 0 },
-        { time: 1500, lane: 1 },
-        { time: 2000, lane: 2 },
-        { time: 2500, lane: 3 }
-    ];
-
     let startTime;
     let score = 0;
 
-    function createNoteAtTime(timestamp) {
-        const timing = noteTimings.find(t => Math.abs(timestamp - t.time) < 50);
-        if (timing) {
-            notes.push({
-                x: buttonXPositions[timing.lane] - 35,
-                y: -50,
-                lane: timing.lane
-            });
-        }
+    function createNote() {
+        const lane = Math.floor(Math.random() * 4);
+        notes.push({
+            x: buttonXPositions[lane] - 35,
+            y: -50,
+            lane: lane
+        });
     }
 
     function drawNotes() {
@@ -129,7 +135,21 @@
 
         notes.forEach(note => note.y += 5);
 
-        notes.filter(note => note.y > canvas.height);
+        // Remove notes that go out of bounds
+        for (let i = notes.length - 1; i >= 0; i--) {
+            if (notes[i].y > canvas.height) {
+                notes.splice(i, 1);
+            }
+        }
+    }
+
+    function flashEffect(x, y) {
+        const flash = document.createElement('div');
+        flash.classList.add('flash');
+        flash.style.left = `${x}px`;
+        flash.style.top = `${y}px`;
+        document.body.appendChild(flash);
+        setTimeout(() => flash.remove(), 300);
     }
 
     function handleKeyPress(e) {
@@ -139,6 +159,8 @@
             const laneIndex = buttonKeys.indexOf(key);
             const hitIndex = notes.findIndex(note => note.lane === laneIndex && Math.abs(note.y - (canvas.height * 0.9 - 35)) < 40);
             if (hitIndex !== -1) {
+                const note = notes[hitIndex];
+                flashEffect(note.x + 35, canvas.height * 0.9 - 35);
                 notes.splice(hitIndex, 1);
                 score++;
                 console.log(`Score: ${score}`);
@@ -160,7 +182,10 @@
         if (!startTime) startTime = timestamp;
         const elapsed = timestamp - startTime;
 
-        createNoteAtTime(elapsed);
+        if (elapsed % 500 < 16.67) { // Spawn a note every 500ms
+            createNote();
+        }
+
         drawNotes();
         requestAnimationFrame(gameLoop);
     }
