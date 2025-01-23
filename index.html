@@ -708,7 +708,20 @@ BECOME A MANIAC!</p>
     <button onclick="window.location.href='/genres'">More Genres</button>
 </div>
 
- 
+
+       <div id="analysis" class="content-section">
+        <h2>Analysis</h2>
+    <div class="card-container">
+        <div class="analysis-card">
+            <canvas id="genreChart"></canvas>
+        </div>
+        <div class="analysis-card" id="blackholeCard" onclick="window.location.href='/map'">
+            <img src="https://icon-library.com/images/white-globe-icon/white-globe-icon-24.jpg" alt="Map">
+            <h3>Map</h3>
+            <p>Explore and track the worldwide growth of PhonkDex, its artists and its genres.</p>
+        </div>
+    </div>
+    </div>
 
     <div id="artists" class="content-section">
         <h2>Top Artists</h2>
@@ -718,13 +731,15 @@ BECOME A MANIAC!</p>
                 <h3>Three 6 Mafia</h3>
                 <p>A pioneer of the genre, blending psychedelic elements with classic beats.</p>
             </div>
-            <div class="analysis-card">
-            <canvas id="genreChart"></canvas>
+            <div class="card">
+                <img src="https://ugc.production.linktr.ee/MRV00BNwS1u1X18R053M_O8m6192P51wN3545?io=true&size=avatar-v3_0" alt="Artist 2">
+            <h3>Kordhell</h3>
+                <p>Kordhell is a UK-based producer renowned for dark, atmospheric phonk tracks.</p>
         </div>
-            <div class="card" onclick="window.location.href='/map'">
-                <img src="https://icon-library.com/images/white-globe-icon/white-globe-icon-24.jpg" alt="Map">
-            <h3>Map</h3>
-            <p>Your one-stop visual guide to explore and track the worldwide growth of PhonkDex, its artists and its genres.</p>
+            <div class="card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/FreddieDreddInConcert.png/220px-FreddieDreddInConcert.png" alt="Artist 3">
+            <h3>Freddie Dredd</h3>
+                <p>Freddie Dredd is a Canadian rapper-producer known for his dark, sample-heavy phonk and trap fusion.</p>
             </div>
         </div>
         <button onclick="window.location.href='/artist'">More Artists</button>
