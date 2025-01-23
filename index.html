@@ -708,19 +708,7 @@ BECOME A MANIAC!</p>
     <button onclick="window.location.href='/genres'">More Genres</button>
 </div>
 
-    <div id="analysis" class="content-section">
-        <h2>Analysis</h2>
-    <div class="card-container">
-        <div class="analysis-card">
-            <h3>Artists and Genres</h3>
-            <p><canvas id="genreChart"></canvas></p>
-        </div>
-        <div class="analysis-card" id="blackholeCard" onclick="window.location.href='/map'">
-            <img src="https://icon-library.com/images/white-globe-icon/white-globe-icon-24.jpg" alt="Map">
-            <h3>Map</h3>
-        </div>
-    </div>
-    </div>
+ 
 
     <div id="artists" class="content-section">
         <h2>Top Artists</h2>
@@ -730,15 +718,14 @@ BECOME A MANIAC!</p>
                 <h3>Three 6 Mafia</h3>
                 <p>A pioneer of the genre, blending psychedelic elements with classic beats.</p>
             </div>
-            <div class="card">
-                <img src="/images/soudiere.jpeg" alt="Artist 2">
-                <h3>Soudiere</h3>
-                <p>Known for his smooth and moody tracks that define chill Phonk.</p>
-            </div>
-            <div class="card">
-                <img src="/images/playaphonk.jpg" alt="Artist 3">
-                <h3>PlayaPhonk</h3>
-                <p>Bringing new life to old-school samples with a modern twist.</p>
+            <div class="analysis-card">
+            <canvas id="genreChart"></canvas>
+            <p>Your one-stop visual guide to explore and track the worldwide growth of PhonkDex, its artists and its genres.</p>
+        </div>
+            <div class="card" onclick="window.location.href='/map'">
+                <img src="https://icon-library.com/images/white-globe-icon/white-globe-icon-24.jpg" alt="Map">
+            <h3>Map</h3>
+            <p>Your one-stop visual guide to explore and track the worldwide growth of PhonkDex, its artists and its genres.</p>
             </div>
         </div>
         <button onclick="window.location.href='/artist'">More Artists</button>
